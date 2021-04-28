@@ -144,26 +144,26 @@ static void ErrorCallback(int error, const char *description)
 
 // ------ Core -------
 // Window functions
-void Mini_InitWindow(int w, int h, const char *title);
-void Mini_CloseWindow();
-int Mini_WindowCloses();
+void MiniGFX_InitWindow(int w, int h, const char *title);
+void MiniGFX_CloseWindow();
+int MiniGFX_WindowCloses();
 
 // Drawing functions
-void Mini_StartDrawing();
-void Mini_EndDrawing();
-void Mini_ClearTo(Color color);
+void MiniGFX_StartDrawing();
+void MiniGFX_EndDrawing();
+void MiniGFX_ClearTo(Color color);
 
 // Keyboard functions
-int Mini_IsKeyUp(int key);
-int Mini_IsKeyHeld(int key);
-int Mini_IsKeyPressed(int key);
-int Mini_IsKeyReleased(int key);
+int MiniGFX_IsKeyUp(int key);
+int MiniGFX_IsKeyHeld(int key);
+int MiniGFX_IsKeyPressed(int key);
+int MiniGFX_IsKeyReleased(int key);
 
 // ---------------------
 // Window functions
 
 // Initialize OpenGL context
-void Mini_InitWindow(int w, int h, const char *title)
+void MiniGFX_InitWindow(int w, int h, const char *title)
 {
     // check if glfw inits properly
     if (!glfwInit()) {
@@ -200,14 +200,14 @@ void Mini_InitWindow(int w, int h, const char *title)
 }
 
 // Close the OpenGL context
-void Mini_CloseWindow()
+void MiniGFX_CloseWindow()
 {
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
 // Check if the ESC key or close button is pressed
-int Mini_WindowCloses()
+int MiniGFX_WindowCloses()
 {
     return glfwWindowShouldClose(window);
 }
@@ -215,14 +215,14 @@ int Mini_WindowCloses()
 // Drawing functions
 
 // Clear buffers
-void Mini_StartDrawing()
+void MiniGFX_StartDrawing()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
 }
 
 // Swap buffers and poll events
-void Mini_EndDrawing()
+void MiniGFX_EndDrawing()
 {
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -231,7 +231,7 @@ void Mini_EndDrawing()
 }
 
 // Clear the background color to a certain color
-void Mini_ClearTo(Color color)
+void MiniGFX_ClearTo(Color color)
 {
     // do some clamping calculations
     // OpenGL does its coloring things with values from 0.0 to 1.0
@@ -246,7 +246,7 @@ void Mini_ClearTo(Color color)
 // Keyboard functions
 
 // Check if a key is up
-int Mini_IsKeyUp(int key)
+int MiniGFX_IsKeyUp(int key)
 {
     if (glfwGetKey(window, key) == GLFW_RELEASE)
         return 1;
@@ -255,7 +255,7 @@ int Mini_IsKeyUp(int key)
 }
 
 // Check if a key is held down
-int Mini_IsKeyHeld(int key)
+int MiniGFX_IsKeyHeld(int key)
 {
     if (glfwGetKey(window, key) == GLFW_PRESS)
         return 1;
@@ -264,11 +264,11 @@ int Mini_IsKeyHeld(int key)
 }
 
 // Check if a key is pressed once
-int Mini_IsKeyPressed(int key)
+int MiniGFX_IsKeyPressed(int key)
 {
     int pressed = 0;
 
-    currentKeyState[key] = Mini_IsKeyHeld(key);
+    currentKeyState[key] = MiniGFX_IsKeyHeld(key);
 
     if (currentKeyState[key] != previousKeyState[key]) {
         if (currentKeyState[key])
@@ -282,11 +282,11 @@ int Mini_IsKeyPressed(int key)
 }
 
 // Check if a key is released
-int Mini_IsKeyReleased(int key)
+int MiniGFX_IsKeyReleased(int key)
 {
     int released = 0;
 
-    currentKeyState[key] = Mini_IsKeyUp(key);
+    currentKeyState[key] = MiniGFX_IsKeyUp(key);
 
     if (currentKeyState[key] != previousKeyState[key]) {
         if (currentKeyState[key])

@@ -3,14 +3,14 @@
 
 int main()
 {
-    Mini_InitWindow(1024, 600, "Basic Window in minigfx");
+    MiniGFX_InitWindow(1024, 600, "Basic Window in minigfx");
 
-    while (!Mini_WindowCloses()) {
-        Mini_StartDrawing();
-        Mini_ClearTo(WHITE);
-        Mini_EndDrawing();
+    while (!MiniGFX_WindowCloses()) {
+        MiniGFX_StartDrawing();
+        MiniGFX_ClearTo(WHITE);
+        MiniGFX_EndDrawing();
     }
 
-    Mini_CloseWindow();
+    MiniGFX_CloseWindow();
     return 0;
 }
