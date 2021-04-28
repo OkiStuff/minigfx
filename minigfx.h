@@ -14,7 +14,7 @@ typedef struct Color {
 } Color;
 
 // ------- Defines and macros -
-#define WHITE   (Color){ 255, 255, 255, 255 }
+#define WHITE       (Color){ 255, 255, 255, 255 }
 
 // ------- Variables ---------
 GLFWwindow *window;
@@ -104,12 +104,12 @@ void Mini_ClearTo(Color color)
 {
     // do some clamping calculations
     // OpenGL does its coloring things with values from 0.0 to 1.0
-    color.r = (float)color.r / 255;
-    color.g = (float)color.g / 255;
-    color.b = (float)color.b / 255;
-    color.a = (float)color.a / 255;
+    float r = (float)color.r / 255;
+    float g = (float)color.g / 255;
+    float b = (float)color.b / 255;
+    float a = (float)color.a / 255;
 
-    glClearColor(color.r, color.g, color.b, color.a);
+    glClearColor(r, g, b, a);
 }
 
 #endif  // MINIGFX_H
