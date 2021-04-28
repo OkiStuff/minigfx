@@ -1,3 +1,5 @@
+<img align="center" src="https://github.com/laurenloco/minigfx/resources/header.png" width=256>
+
 # minigfx
 Small graphics library made in C
 
