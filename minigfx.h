@@ -18,6 +18,11 @@ typedef struct vec2d {
     float x, y;
 } vec2d;
 
+typedef struct Rectangle {
+    float x, y;
+    int w, h;
+} Rectangle;
+
 enum {
     KEY_NULL            = 0,
     // Alphanumeric keys
@@ -167,6 +172,9 @@ int MiniGFX_IsKeyReleased(int key);
 // ------ Shapes -------
 void MiniGFX_DrawPixel(int x, int y, Color color);
 void MiniGFX_DrawPixelV(vec2d pos, Color color);
+void MiniGFX_DrawRectangle(int x, int y, int w, int h, Color color);
+void MiniGFX_DrawRectangleV(vec2d pos, vec2d size, Color color);
+void MiniGFX_DrawRectangleRec(Rectangle rec, Color color);
 
 // ---------------------
 // Window functions
@@ -313,6 +321,7 @@ int MiniGFX_IsKeyReleased(int key)
 
 // ------ Shapes -------
 
+// Draw a single pixel
 void MiniGFX_DrawPixel(int x, int y, Color color)
 {
     glBegin(GL_POINTS);
@@ -321,11 +330,48 @@ void MiniGFX_DrawPixel(int x, int y, Color color)
     glEnd();
 }
 
+// Draw a single pixel with vec2d type
 void MiniGFX_DrawPixelV(vec2d pos, Color color)
 {
     glBegin(GL_POINTS);
         glColor4ub(color.r, color.g, color.b, color.a);
         glVertex2f(pos.x, pos.y);
+    glEnd();
+}
+
+// Draw a rectangle
+void MiniGFX_DrawRectangle(int x, int y, int w, int h, Color color)
+{
+    glBegin(GL_QUADS);
+        glColor4ub(color.r, color.g, color.b, color.a);
+        glVertex2i(x, y);
+        glVertex2i(x + w, y);
+        glVertex2i(x + w, y + h);
+        glVertex2i(x, y + h);
+    glEnd();
+}
+
+// Draw a rectangle with vec2d type
+void MiniGFX_DrawRectangleV(vec2d pos, vec2d size, Color color)
+{
+    glBegin(GL_QUADS);
+        glColor4ub(color.r, color.g, color.b, color.a);
+        glVertex2i(pos.x, pos.y);
+        glVertex2i(pos.x + size.x, pos.y);
+        glVertex2i(pos.x + size.x, pos.y + size.y);
+        glVertex2i(pos.x, pos.y + size.y);
+    glEnd();
+}
+
+// Draw a rectangle with Rectangle type
+void MiniGFX_DrawRectangleRec(Rectangle rec, Color color)
+{
+    glBegin(GL_QUADS);
+        glColor4ub(color.r, color.g, color.b, color.a);
+        glVertex2i(rec.x, rec.y);
+        glVertex2i(rec.x + rec.w, rec.y);
+        glVertex2i(rec.x + rec.w, rec.y + rec.h);
+        glVertex2i(rec.x, rec.y + rec.h);
     glEnd();
 }
 
