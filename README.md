@@ -1,4 +1,4 @@
-!()[./resources/header.png]
+![](./resources/header.png)
 
 # minigfx
 Small graphics library made in C
