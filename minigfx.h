@@ -61,6 +61,8 @@ void Mini_InitWindow(int w, int h, const char *title)
         exit(1);
     }
 
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
     // initialize the window
     window = glfwCreateWindow(w, h, title, NULL, NULL);
     if (!window) {
@@ -69,7 +71,6 @@ void Mini_InitWindow(int w, int h, const char *title)
     }
 
     // set hints and callbacks
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwSetKeyCallback(window, KeyCallback);
 
     glfwMakeContextCurrent(window);
