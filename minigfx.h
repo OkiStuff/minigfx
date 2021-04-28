@@ -139,7 +139,7 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
 
 static void ErrorCallback(int error, const char *description)
 {
-    printf(stderr, "Error: %s\n", description);
+    printf("Error: %s\n", description);
 }
 
 // ------ Core -------
@@ -185,6 +185,18 @@ void Mini_InitWindow(int w, int h, const char *title)
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);    // V-Sync on automatically
+
+    // Initialize graphics device
+    int fbWidth, fbHeight;
+    glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
+    glViewport(0, 0, fbWidth, fbHeight);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.0, 0.0, 0.0, 1.0);   // black by default
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, fbWidth, fbHeight, 0, 0, 1);     // top left corner is 0,0
 }
 
 // Close the OpenGL context
@@ -205,14 +217,8 @@ int Mini_WindowCloses()
 // Clear buffers
 void Mini_StartDrawing()
 {
-    int width, height;
-
-    glfwGetFramebufferSize(window, &width, &height);
-
-    glViewport(0, 0, width, height);
-
-    glLoadIdentity();
     glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
 }
 
 // Swap buffers and poll events
@@ -220,6 +226,8 @@ void Mini_EndDrawing()
 {
     glfwSwapBuffers(window);
     glfwPollEvents();
+
+    glFlush();
 }
 
 // Clear the background color to a certain color
