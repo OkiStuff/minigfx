@@ -135,6 +135,7 @@ enum {
 GLFWwindow *window;
 
 int keyExit = KEY_ESCAPE;
+int windowWidth, windowHeight;
 
 int currentKeyState[512] = { 0 };
 int previousKeyState[512] = { 0 };
@@ -157,6 +158,8 @@ static void ErrorCallback(int error, const char *description)
 void MiniGFX_InitWindow(int w, int h, const char *title);
 void MiniGFX_CloseWindow();
 int MiniGFX_WindowCloses();
+int MiniGFX_GetWindowWidth();
+int MiniGFX_GetWindowHeight();
 
 // Drawing functions
 void MiniGFX_StartDrawing();
@@ -230,6 +233,22 @@ void MiniGFX_CloseWindow()
 int MiniGFX_WindowCloses()
 {
     return glfwWindowShouldClose(window);
+}
+
+// Returns the window's width
+int MiniGFX_GetWindowWidth()
+{
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
+    return windowWidth;
+}
+
+// Returns the window's height
+int MiniGFX_GetWindowHeight()
+{
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
+    return windowHeight;
 }
 
 // Drawing functions
