@@ -5,10 +5,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// ------- Types --------
+typedef struct Color {
+    unsigned int r;
+    unsigned int g;
+    unsigned int b;
+    unsigned int a;
+} Color;
+
+// ------- Defines and macros -
+#define WHITE   (Color){ 255, 255, 255, 255 }
+
+// ------- Variables ---------
 GLFWwindow *window;
 
 int keyExit = GLFW_KEY_ESCAPE;
 
+// -------- Functions -----------
 static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
     if (key == keyExit && action == GLFW_PRESS) {   // close
@@ -25,6 +38,7 @@ int Mini_WindowCloses();
 // Drawing functions
 void Mini_StartDrawing();
 void Mini_EndDrawing();
+void Mini_ClearTo(Color color);
 
 // ---------------------
 // Window functions
@@ -83,6 +97,19 @@ void Mini_EndDrawing()
 {
     glfwSwapBuffers(window);
     glfwPollEvents();
+}
+
+// Clear the background color to a certain color
+void Mini_ClearTo(Color color)
+{
+    // do some clamping calculations
+    // OpenGL does its coloring things with values from 0.0 to 1.0
+    color.r = (float)color.r / 255;
+    color.g = (float)color.g / 255;
+    color.b = (float)color.b / 255;
+    color.a = (float)color.a / 255;
+
+    glClearColor(color.r, color.g, color.b, color.a);
 }
 
 #endif  // MINIGFX_H

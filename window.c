@@ -7,7 +7,7 @@ int main()
 
     while (!Mini_WindowCloses()) {
         Mini_StartDrawing();
-        
+        Mini_ClearTo(WHITE);
         Mini_EndDrawing();
     }
 
