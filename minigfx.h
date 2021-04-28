@@ -99,6 +99,8 @@ void Mini_StartDrawing()
     glfwGetFramebufferSize(window, &width, &height);
 
     glViewport(0, 0, width, height);
+
+    glLoadIdentity();
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
