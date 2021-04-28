@@ -137,6 +137,11 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
     }
 }
 
+static void ErrorCallback(int error, const char *description)
+{
+    printf(stderr, "Error: %s\n", description);
+}
+
 // ------ Core -------
 // Window functions
 void Mini_InitWindow(int w, int h, const char *title);
@@ -176,6 +181,7 @@ void Mini_InitWindow(int w, int h, const char *title)
 
     // set hints and callbacks
     glfwSetKeyCallback(window, KeyCallback);
+    glfwSetErrorCallback(ErrorCallback);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);    // V-Sync on automatically
