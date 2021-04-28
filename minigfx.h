@@ -14,6 +14,10 @@ typedef struct Color {
     unsigned int a;
 } Color;
 
+typedef struct vec2d {
+    float x, y;
+} vec2d;
+
 enum {
     KEY_NULL            = 0,
     // Alphanumeric keys
@@ -162,6 +166,7 @@ int MiniGFX_IsKeyReleased(int key);
 
 // ------ Shapes -------
 void MiniGFX_DrawPixel(int x, int y, Color color);
+void MiniGFX_DrawPixelV(vec2d pos, Color color);
 
 // ---------------------
 // Window functions
@@ -313,6 +318,14 @@ void MiniGFX_DrawPixel(int x, int y, Color color)
     glBegin(GL_POINTS);
         glColor4ub(color.r, color.g, color.b, color.a);
         glVertex2i(x, y);
+    glEnd();
+}
+
+void MiniGFX_DrawPixelV(vec2d pos, Color color)
+{
+    glBegin(GL_POINTS);
+        glColor4ub(color.r, color.g, color.b, color.a);
+        glVertex2f(pos.x, pos.y);
     glEnd();
 }
 
