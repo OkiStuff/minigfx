@@ -2,6 +2,7 @@
 #define MINIGFX_H
 
 #include <GLFW/glfw3.h>
+#include <GL/gl.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -159,6 +160,9 @@ int MiniGFX_IsKeyHeld(int key);
 int MiniGFX_IsKeyPressed(int key);
 int MiniGFX_IsKeyReleased(int key);
 
+// ------ Shapes -------
+void MiniGFX_DrawPixel(int x, int y, Color color);
+
 // ---------------------
 // Window functions
 
@@ -195,8 +199,11 @@ void MiniGFX_InitWindow(int w, int h, const char *title)
     glClearColor(0.0, 0.0, 0.0, 1.0);   // black by default
 
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    glLoadIdentity();   // reset the projection matrix
     glOrtho(0, fbWidth, fbHeight, 0, 0, 1);     // top left corner is 0,0
+
+    glMatrixMode(GL_MODELVIEW);     // THIS guy took me more time than necessary.
+    glLoadIdentity();   // reset the modelview matrix
 }
 
 // Close the OpenGL context
@@ -297,6 +304,16 @@ int MiniGFX_IsKeyReleased(int key)
     }
 
     return released;
+}
+
+// ------ Shapes -------
+
+void MiniGFX_DrawPixel(int x, int y, Color color)
+{
+    glBegin(GL_POINTS);
+        glColor4ub(color.r, color.g, color.b, color.a);
+        glVertex2i(x, y);
+    glEnd();
 }
 
 #endif  // MINIGFX_H
