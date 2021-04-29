@@ -147,7 +147,7 @@ enum {
 #define ORANGE          (Color){ 255, 153, 51, 255  }
 #define YELLOW          (Color){ 255, 201, 90, 255  }
 #define GREEN           (Color){ 102, 255, 102, 255 }
-#define BLUE            (Color){ 128, 255, 0, 255   }
+#define BLUE            (Color){ 0, 128, 255, 255   }
 #define PURPLE          (Color){ 178, 102, 255, 255 }
 #define PINK            (Color){ 255, 204, 255, 255 }
 #define MAGENTA         (Color){ 255, 102, 255, 255 }
