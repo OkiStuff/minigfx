@@ -3,8 +3,11 @@
 # minigfx
 Small graphics library made in C
 
-## Objective
-To make it really simple to develop OpenGL applications. Inspired by raylib.
+## Features
+- Simple to understand
+- Intuitive
+- Fun to use
+- Usable for a variety of things; not just games!
 
 ## Dependencies
 OpenGL, GLFW
