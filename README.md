@@ -25,7 +25,7 @@ $ gcc main.c -lGL -lglfw -lm
 ```
 
 ## minigfx example application
-You will need one file on your project: **minigfx.h**
+Please check APPS.md to see how to work with minigfx properly.
 ```
 #define MINIGFX_IMPLEMENTATION
 #include "minigfx.h"
