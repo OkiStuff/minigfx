@@ -518,7 +518,9 @@ Sprite MiniGFX_LoadSprite(const char *path)
 
 // Unload sprite from GPU
 void MiniGFX_UnloadSprite(Sprite sprite)
-{}
+{
+    glDeleteTextures(1, &sprite);
+}
 
 // Draw a sprite
 void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint)
