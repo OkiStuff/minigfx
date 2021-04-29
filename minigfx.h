@@ -249,6 +249,7 @@ void MiniGFX_DrawCircleC(Circle circle, Color color);
 Sprite MiniGFX_LoadSprite(const char *path);
 void MiniGFX_UnloadSprite(Sprite sprite);
 void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint);
+void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, Color tint);
 
 // ---------------------
 // Window functions
@@ -646,6 +647,41 @@ void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint)
     glPopMatrix();
 
     glDisable(GL_TEXTURE_2D);   // disable textures usage
+}
+
+// Draw part of a sprite
+void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, Color tint)
+{
+    glEnable(GL_TEXTURE_2D);    // enable texture usage
+    
+    glBindTexture(GL_TEXTURE_2D, sprite.ID);
+    
+    glPushMatrix();
+        glTranslatef(pos.x, pos.y, 0);
+
+        glBegin(GL_QUADS);
+            glColor4ub(tint.r, tint.g, tint.b, tint.a);
+            glNormal3f(0.0, 0.0, 1.0);
+
+            // Bottom-left corner for sprite and quad
+            glTexCoord2f((float)rec.x / sprite.width, (float)rec.y / sprite.height); 
+            glVertex2f(0.0f, 0.0f);
+        
+            // Bottom-right corner for sprite and quad
+            glTexCoord2f((float)(rec.x + rec.w) / sprite.width, (float)rec.y / sprite.height);
+            glVertex2f(rec.w, 0.0f);
+                
+            // Top-right corner for sprite and quad
+            glTexCoord2f((float)(rec.x + rec.w) / sprite.width, (float)(rec.y + rec.h) / sprite.height); 
+            glVertex2f(rec.w, rec.h);
+                
+            // Top-left corner for sprite and quad
+            glTexCoord2f((float)rec.x / sprite.width, (float)(rec.y + rec.h) / sprite.height);
+            glVertex2f(0.0f, rec.h);
+        glEnd();
+    glPopMatrix();
+    
+    glDisable(GL_TEXTURE_2D);    // disable texture usage
 }
 
 #endif  // MINIGFX_H
