@@ -205,6 +205,7 @@ void MiniGFX_InitWindow(int w, int h, const char *title)
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);    // V-Sync on automatically
+    glfwSetWindowPos(window, 230, 230);
 
     // Initialize graphics device
     int fbWidth, fbHeight;
