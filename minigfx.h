@@ -222,7 +222,7 @@ void MiniGFX_DrawCircle(int x, int y, float radius, Color color);
 void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color);
 void MiniGFX_DrawCircleC(Circle circle, Color color);
 
-// ------ Images -------
+// ------ Sprites -------
 Sprite MiniGFX_LoadSprite(const char *path);
 void MiniGFX_UnloadSprite(Sprite sprite);
 void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint);
@@ -476,12 +476,17 @@ void MiniGFX_DrawCircleC(Circle circle, Color color)
     MiniGFX_DrawCircle(circle.x, circle.y, circle.radius, color);
 }
 
+// ------ Sprites -------
+
+// Load sprite into GPU
 Sprite MiniGFX_LoadSprite(const char *path)
 {}
 
+// Unload sprite from GPU
 void MiniGFX_UnloadSprite(Sprite sprite)
 {}
 
+// Draw a sprite
 void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint)
 {}
 
