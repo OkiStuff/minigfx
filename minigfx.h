@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "external/stb_image.h"
+
 // ------- Types --------
 typedef struct Color {
     unsigned int r;
@@ -32,6 +35,8 @@ typedef struct Sprite {
     unsigned int ID;
     int width, height;
 } Sprite;
+
+typedef unsigned char byte;
 
 enum {
     KEY_NULL            = 0,
@@ -480,7 +485,36 @@ void MiniGFX_DrawCircleC(Circle circle, Color color)
 
 // Load sprite into GPU
 Sprite MiniGFX_LoadSprite(const char *path)
-{}
+{
+    Sprite sprite;
+    int imgWidth, imgHeight, imgBpp;
+
+    // Loading image in question
+    byte *data = stbi_load(path, &imgWidth, &imgHeight, &imgBpp, 4);
+
+    // Convert data into an OpenGL texture
+    GLuint id;
+    glGenTextures(1, &id);  // Generate texture
+    glBindTexture(GL_TEXTURE_2D, id);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);       // Set texture to repeat on the x-axis
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);       // Set texture to repeat on the y-axis
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);  // Filter for pixel-perfect drawing
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);  // Filter for pixel-perfect drawing
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+    // At this point we uploaded to GPU
+
+    // Free the loaded data from RAM
+    stbi_image_free(data);
+
+    sprite.ID = id;
+    sprite.width = imgWidth;
+    sprite.height = imgHeight;
+
+    return sprite;
+}
 
 // Unload sprite from GPU
 void MiniGFX_UnloadSprite(Sprite sprite)
