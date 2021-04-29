@@ -28,6 +28,11 @@ typedef struct Circle {
     float radius;
 } Circle;
 
+typedef struct Sprite {
+    unsigned int ID;
+    int width, height;
+} Sprite;
+
 enum {
     KEY_NULL            = 0,
     // Alphanumeric keys
@@ -216,6 +221,11 @@ void MiniGFX_DrawRectangleRec(Rectangle rec, Color color);
 void MiniGFX_DrawCircle(int x, int y, float radius, Color color);
 void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color);
 void MiniGFX_DrawCircleC(Circle circle, Color color);
+
+// ------ Images -------
+Sprite MiniGFX_LoadSprite(const char *path);
+void MiniGFX_UnloadSprite(Sprite sprite);
+void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint);
 
 // ---------------------
 // Window functions
@@ -465,5 +475,14 @@ void MiniGFX_DrawCircleC(Circle circle, Color color)
 {
     MiniGFX_DrawCircle(circle.x, circle.y, circle.radius, color);
 }
+
+Sprite MiniGFX_LoadSprite(const char *path)
+{}
+
+void MiniGFX_UnloadSprite(Sprite sprite)
+{}
+
+void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint)
+{}
 
 #endif  // MINIGFX_H
