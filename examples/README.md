@@ -2,8 +2,8 @@
 
 The makefile has a modifiable value: SRC.
 
-Simply enough, specify what file you wish to compile, and there you go. The final application will have a name: `minigfx-compiled`
+Simply enough, specify what file you wish to compile, and there you go.
 
 ```
-$ make SRC=window.c
+$ make SRC=window
 ```

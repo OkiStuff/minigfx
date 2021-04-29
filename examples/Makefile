@@ -1,9 +1,8 @@
 # Variables
 CC = gcc
 LDLIBS = -lGL -lglfw -lm
-SRC ?= window.c
-PROJECT = minigfx-compiled
+SRC ?= window
 
 # Compiling application
 all:
-	$(CC) $(SRC) $(LDLIBS) -o $(PROJECT)
+	$(CC) $(SRC).c $(LDLIBS) -o $(SRC)
