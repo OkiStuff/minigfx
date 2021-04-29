@@ -12,7 +12,7 @@ OpenGL, GLFW
 ## Compiling a minigfx application
 minigfx requires OpenGL. Here's a basic compilation command in Unix-like systems (where supported)
 ```
-$ gcc main.c -lGL -lglfw
+$ gcc main.c -lGL -lglfw -lm
 ```
 
 ## minigfx example application

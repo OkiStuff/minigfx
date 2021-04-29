@@ -2,9 +2,9 @@
 #define MINIGFX_H
 
 #include <GLFW/glfw3.h>
-#include <GL/gl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 // ------- Types --------
 typedef struct Color {
@@ -22,6 +22,11 @@ typedef struct Rectangle {
     float x, y;
     int w, h;
 } Rectangle;
+
+typedef struct Circle {
+    int x, y;
+    float radius;
+} Circle;
 
 enum {
     KEY_NULL            = 0,
@@ -131,6 +136,10 @@ enum {
 #define PINK            (Color){ 255, 204, 255, 255 }
 #define MAGENTA         (Color){ 255, 102, 255, 255 }
 
+#define PI 3.14159265358979323846
+#define DEG2RAD (PI / 180.0)
+#define RAD2DEG (180.0 / PI)
+
 // ------- Variables ---------
 GLFWwindow *window;
 
@@ -151,6 +160,30 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
 static void ErrorCallback(int error, const char *description)
 {
     printf("Error: %s\n", description);
+}
+
+// Draw a polygon of N sides
+// https://github.com/raysan5/raylib/blob/1.0.4/src/shapes.c
+static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color color)
+{
+    if (sides <= 3) sides = 3;
+
+    glPushMatrix();
+        glTranslatef(pos.x, pos.y, 0);
+        glRotatef(rotation, 0, 0, 1);
+
+        glBegin(GL_TRIANGLE_FAN);
+            glColor4ub(color.r, color.g, color.b, color.a);
+            glVertex2f(pos.x, pos.y);
+
+            for (int i = 0; i < sides; i++) {
+                glVertex2f(
+                    radius*cos(i * 2 * PI / sides),
+                    radius*sin(i * 2 * PI / sides)
+                );
+            }
+        glEnd();
+    glPopMatrix();
 }
 
 // ------ Core -------
@@ -175,9 +208,14 @@ int MiniGFX_IsKeyReleased(int key);
 // ------ Shapes -------
 void MiniGFX_DrawPixel(int x, int y, Color color);
 void MiniGFX_DrawPixelV(vec2d pos, Color color);
+
 void MiniGFX_DrawRectangle(int x, int y, int w, int h, Color color);
 void MiniGFX_DrawRectangleV(vec2d pos, vec2d size, Color color);
 void MiniGFX_DrawRectangleRec(Rectangle rec, Color color);
+
+void MiniGFX_DrawCircle(int x, int y, float radius, Color color);
+void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color);
+void MiniGFX_DrawCircleC(Circle circle, Color color);
 
 // ---------------------
 // Window functions
@@ -393,6 +431,39 @@ void MiniGFX_DrawRectangleRec(Rectangle rec, Color color)
         glVertex2i(rec.x + rec.w, rec.y + rec.h);
         glVertex2i(rec.x, rec.y + rec.h);
     glEnd();
+}
+
+// Draw a circle
+void MiniGFX_DrawCircle(int x, int y, float radius, Color color)
+{
+    // Avoid division by 0
+    if (radius <= 0) radius = 0.1f;
+
+    glEnable(GL_POLYGON_SMOOTH);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    
+    glBegin(GL_TRIANGLE_FAN);
+        glColor4ub(color.r, color.g, color.b, color.a);
+        glVertex2f(x, y);
+
+        for (int i = 0; i <= 360; i++) {
+            glVertex2f(x + sin(DEG2RAD*i) * radius, y + cos(DEG2RAD*i) * radius);
+        }
+    glEnd();
+    
+    glDisable(GL_POLYGON_SMOOTH);
+}
+
+// Draw a circle with vec2d type
+void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color)
+{
+    MiniGFX_DrawCircle((float)pos.x, (float)pos.y, radius, color);
+}
+
+// Draw a circle with Circle type
+void MiniGFX_DrawCircleC(Circle circle, Color color)
+{
+    MiniGFX_DrawCircle(circle.x, circle.y, circle.radius, color);
 }
 
 #endif  // MINIGFX_H
