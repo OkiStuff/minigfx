@@ -3,11 +3,17 @@
 # minigfx
 Small graphics library made in C
 
-## Features
+## Intended to be:
 - Simple to understand
 - Intuitive
 - Fun to use
-- Usable for a variety of things; not just games!
+
+## Features
+- Creating windows easily
+- Managing OpenGL easily
+- Draw and manage shapes
+- (soon) manage images
+- Usable for a variety of things; not just games! (check examples/graph as an example)
 
 ## Dependencies
 OpenGL, GLFW
