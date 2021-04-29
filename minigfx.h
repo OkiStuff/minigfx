@@ -230,7 +230,7 @@ void MiniGFX_DrawCircleC(Circle circle, Color color);
 // ------ Sprites -------
 Sprite MiniGFX_LoadSprite(const char *path);
 void MiniGFX_UnloadSprite(Sprite sprite);
-void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint);
+void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint);
 
 // ---------------------
 // Window functions
@@ -523,7 +523,27 @@ void MiniGFX_UnloadSprite(Sprite sprite)
 }
 
 // Draw a sprite
-void MiniGFX_DrawSprite(Sprite sprite, int x, int y, Color tint)
-{}
+void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint)
+{
+    glEnable(GL_TEXTURE_2D);    // enable texture usage
+
+    glBindTexture(GL_TEXTURE_2D, sprite.ID);
+
+    glPushMatrix();
+        glTranslatef(x, y, 0);
+        glScalef(scale, scale, 1.0f);
+
+        glBegin(GL_QUADS);
+            glColor4ub(tint.r, tint.g, tint.b, tint.a);
+            glNormal3f(0.0f, 0.0f, 1.0f);                                       // Pointing towards viewer
+            glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, 0.0f);                   // Bottom-left corner of texture and quad
+            glTexCoord2f(1.0f, 0.0f); glVertex2f(sprite.width, 0.0f);           // Bottom-right corner of texture and quad
+            glTexCoord2f(1.0f, 1.0f); glVertex2f(sprite.width, sprite.height);  // Top-right corner of texture and quad
+            glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, sprite.height);          // Top-left corner of texture and quad
+        glEnd();
+    glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);   // disable textures usage
+}
 
 #endif  // MINIGFX_H
