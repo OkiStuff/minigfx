@@ -133,6 +133,12 @@ enum {
     KEY_GRAVE           = 96,
 };
 
+enum {
+    MOUSE_LEFT = 0,
+    MOUSE_RIGHT,
+    MOUSE_MIDDLE
+};
+
 // ------- Defines and macros -
 #define WHITE           (Color){ 255, 255, 255, 255 }
 #define BLACK           (Color){ 0, 0, 0, 255       }
@@ -158,6 +164,9 @@ int windowWidth, windowHeight;
 
 int currentKeyState[512] = { 0 };
 int previousKeyState[512] = { 0 };
+
+int currentMouseState[3] = { 0 };
+int previousMouseState[3] = { 0 };
 
 // -------- Functions -----------
 static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -214,6 +223,12 @@ int MiniGFX_IsKeyUp(int key);
 int MiniGFX_IsKeyHeld(int key);
 int MiniGFX_IsKeyPressed(int key);
 int MiniGFX_IsKeyReleased(int key);
+
+// Mouse functions
+int MiniGFX_IsMouseButtonUp(int button);
+int MiniGFX_IsMouseButtonHeld(int button);
+int MiniGFX_IsMouseButtonPressed(int button);
+int MiniGFX_IsMouseButtonReleased(int button);
 
 // ------ Shapes -------
 void MiniGFX_DrawPixel(int x, int y, Color color);
@@ -385,6 +400,62 @@ int MiniGFX_IsKeyReleased(int key)
         if (currentKeyState[key])
             released = 1;
         previousKeyState[key] = currentKeyState[key];
+    } else {
+        released = 0;
+    }
+
+    return released;
+}
+
+// Mouse functions
+
+// Check if a mouse button is not being held
+int MiniGFX_IsMouseButtonUp(int button)
+{
+    if (glfwGetKey(window, button) == GLFW_RELEASE)
+        return 1;
+    else
+        return 0;
+}
+
+// Check if a mouse button is being held
+int MiniGFX_IsMouseButtonHeld(int button)
+{
+    if (glfwGetMouseButton(window, button) == GLFW_PRESS)
+        return 1;
+    else
+        return 0;
+}
+
+// Check if a mouse button is pressed once
+int MiniGFX_IsMouseButtonPressed(int button)
+{
+    int pressed = 0;
+
+    currentMouseState[button] = MiniGFX_IsMouseButtonHeld(button);
+
+    if (currentMouseState[button] != previousMouseState[button]) {
+        if (currentMouseState[button])
+            pressed = 1;
+        previousMouseState[button] = currentMouseState[button];
+    } else {
+        pressed = 0;
+    }
+
+    return pressed;
+}
+
+// Check if a mouse button is released
+int MiniGFX_IsMouseButtonReleased(int button)
+{
+    int released = 0;
+
+    currentMouseState[button] = MiniGFX_IsMouseButtonUp(button);
+
+    if (currentMouseState[button] != previousMouseState[button]) {
+        if (currentMouseState[button])
+            released = 1;
+        previousMouseState[button] = currentMouseState[button];
     } else {
         released = 0;
     }
