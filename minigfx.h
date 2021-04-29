@@ -229,6 +229,9 @@ int MiniGFX_IsMouseButtonUp(int button);
 int MiniGFX_IsMouseButtonHeld(int button);
 int MiniGFX_IsMouseButtonPressed(int button);
 int MiniGFX_IsMouseButtonReleased(int button);
+int MiniGFX_GetMouseX();
+int MiniGFX_GetMouseY();
+vec2d MiniGFX_GetMousePosition();
 
 // ------ Shapes -------
 void MiniGFX_DrawPixel(int x, int y, Color color);
@@ -461,6 +464,34 @@ int MiniGFX_IsMouseButtonReleased(int button)
     }
 
     return released;
+}
+
+// Returns mouse x position
+int MiniGFX_GetMouseX()
+{
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+
+    return (int)mouseX;
+}
+
+// Returns mouse y position
+int MiniGFX_GetMouseY()
+{
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+
+    return (int)mouseY;
+}
+
+vec2d MiniGFX_GetMousePos()
+{
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+
+    vec2d position = (vec2d){ mouseX, mouseY };
+
+    return position;
 }
 
 // ------ Shapes -------
