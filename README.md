@@ -11,8 +11,8 @@ Small graphics library made in C
 ## Features
 - Creating windows easily
 - Managing OpenGL easily
-- Draw and manage shapes
-- (soon) manage images
+- Draw and manage shapes (pixels, rectangles and circles)
+- Draw and manage images
 - Usable for a variety of things; not just games! (check examples/graph as an example)
 
 ## Dependencies
