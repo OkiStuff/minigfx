@@ -188,7 +188,7 @@ static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color c
 
 // ------ Core -------
 // Window functions
-void MiniGFX_InitWindow(int w, int h, const char *title);
+void MiniGFX_CreateWindow(int w, int h, const char *title);
 void MiniGFX_CloseWindow();
 int MiniGFX_WindowCloses();
 int MiniGFX_GetWindowWidth();
@@ -221,7 +221,7 @@ void MiniGFX_DrawCircleC(Circle circle, Color color);
 // Window functions
 
 // Initialize OpenGL context
-void MiniGFX_InitWindow(int w, int h, const char *title)
+void MiniGFX_CreateWindow(int w, int h, const char *title)
 {
     // check if glfw inits properly
     if (!glfwInit()) {

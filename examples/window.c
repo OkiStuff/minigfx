@@ -3,7 +3,7 @@
 
 int main()
 {
-    MiniGFX_InitWindow(1024, 600, "Basic Window in minigfx");
+    MiniGFX_CreateWindow(1024, 600, "Basic Window in minigfx");
 
     while (!MiniGFX_WindowCloses()) {
         MiniGFX_StartDrawing();
