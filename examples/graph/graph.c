@@ -29,7 +29,7 @@ int main()
         YeqX(3, 5);
         YeqX(-3, 5);
         
-        MiniGFX_EndDrawing();
+        MiniGFX_StopDrawing();
     }
 
     MiniGFX_CloseWindow();

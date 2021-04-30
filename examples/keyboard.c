@@ -26,7 +26,7 @@ int main()
         MiniGFX_StartDrawing();
         MiniGFX_ClearTo(WHITE);
         MiniGFX_DrawRectangleRec(rec, RED);
-        MiniGFX_EndDrawing();
+        MiniGFX_StopDrawing();
     }
 
     MiniGFX_CloseWindow();

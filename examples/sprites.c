@@ -10,7 +10,7 @@ int main()
         MiniGFX_StartDrawing();
         MiniGFX_ClearTo(BLACK);
         MiniGFX_DrawSprite(image, -150, 70, 1.0, WHITE);
-        MiniGFX_EndDrawing();
+        MiniGFX_StopDrawing();
     }
 
     MiniGFX_UnloadSprite(image);

@@ -23,7 +23,7 @@ int main()
         MiniGFX_StartDrawing();
         MiniGFX_ClearTo(WHITE);
         MiniGFX_DrawCircleC(circle, circleColor);
-        MiniGFX_EndDrawing();
+        MiniGFX_StopDrawing();
     }
 
     MiniGFX_CloseWindow();

@@ -8,7 +8,7 @@ int main()
     while (!MiniGFX_WindowCloses()) {
         MiniGFX_StartDrawing();
         MiniGFX_ClearTo(WHITE);
-        MiniGFX_EndDrawing();
+        MiniGFX_StopDrawing();
     }
 
     MiniGFX_CloseWindow();

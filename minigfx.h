@@ -215,7 +215,7 @@ int MiniGFX_GetWindowHeight();
 
 // Drawing functions
 void MiniGFX_StartDrawing();
-void MiniGFX_EndDrawing();
+void MiniGFX_StopDrawing();
 void MiniGFX_ClearTo(Color color);
 
 // Keyboard functions
@@ -337,7 +337,7 @@ void MiniGFX_StartDrawing()
 }
 
 // Swap buffers and poll events
-void MiniGFX_EndDrawing()
+void MiniGFX_StopDrawing()
 {
     glfwSwapBuffers(window);
     glfwPollEvents();

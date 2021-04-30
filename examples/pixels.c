@@ -17,7 +17,7 @@ int main()
                 MiniGFX_DrawPixel(x, y, color);
             }
         
-        MiniGFX_EndDrawing();
+        MiniGFX_StopDrawing();
     }
 
     MiniGFX_CloseWindow();
