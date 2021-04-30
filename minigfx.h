@@ -291,6 +291,9 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0.0, 0.0, 0.0, 1.0);   // black by default
 
+    glEnable(GL_BLEND);     // enable color blending; required to work with transparencies
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();   // reset the projection matrix
     glOrtho(0, fbWidth, fbHeight, 0, 0, 1);     // top left corner is 0,0
