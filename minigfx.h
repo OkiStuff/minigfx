@@ -233,6 +233,9 @@ int MiniGFX_GetMouseX();
 int MiniGFX_GetMouseY();
 vec2d MiniGFX_GetMousePosition();
 
+// Misc. functions
+int MiniGFX_RandomInt(int min, int max);
+
 // ------ Shapes -------
 void MiniGFX_DrawPixel(int x, int y, Color color);
 void MiniGFX_DrawPixelV(vec2d pos, Color color);
@@ -493,6 +496,20 @@ vec2d MiniGFX_GetMousePos()
     vec2d position = (vec2d){ mouseX, mouseY };
 
     return position;
+}
+
+// Misc. functions
+
+// Returns a random integer
+int MiniGFX_RandomInt(int min, int max)
+{
+    if (min > max) {
+        int tmp = max;
+        max = min;
+        min = tmp;
+    }
+    
+    return (rand()%(abs(max-min)+1) + min);
 }
 
 // ------ Shapes -------
