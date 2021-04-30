@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "external/stb_image.h"
@@ -296,6 +297,8 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
 
     glMatrixMode(GL_MODELVIEW);     // THIS guy took me more time than necessary.
     glLoadIdentity();   // reset the modelview matrix
+
+    srand(time(NULL));  // initialize timer (done for getting random values)
 }
 
 // Close the OpenGL context
