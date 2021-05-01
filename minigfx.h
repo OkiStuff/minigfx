@@ -39,6 +39,14 @@ typedef struct Sprite {
 
 typedef unsigned char byte;
 
+typedef struct Character Character;     // single glyph data
+
+typedef struct Font {
+    Sprite spr;
+    int chars;
+    Character *charSet;
+} Font;
+
 enum {
     KEY_NULL            = 0,
     // Alphanumeric keys
@@ -253,7 +261,7 @@ void MiniGFX_DrawCircleC(Circle circle, Color color);
 Sprite MiniGFX_LoadSprite(const char *path);
 void MiniGFX_UnloadSprite(Sprite sprite);
 void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint);
-void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, Color tint);
+void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float scale, Color tint);
 
 // ---------------------
 // Window functions
@@ -673,7 +681,7 @@ void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint)
 }
 
 // Draw part of a sprite
-void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, Color tint)
+void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float scale, Color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
     
@@ -681,6 +689,7 @@ void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, Color ti
     
     glPushMatrix();
         glTranslatef(pos.x, pos.y, 0);
+        glScalef(scale, scale, 1.0f);
 
         glBegin(GL_QUADS);
             glColor4ub(tint.r, tint.g, tint.b, tint.a);
