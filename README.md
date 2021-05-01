@@ -45,3 +45,6 @@ int main()
     return 0;
 }
 ```
+
+## License
+minigfx is licensed under zlib. Check LICENSE for more information
