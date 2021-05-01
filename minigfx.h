@@ -39,14 +39,6 @@ typedef struct Sprite {
 
 typedef unsigned char byte;
 
-typedef struct Character Character;     // single glyph data
-
-typedef struct Font {
-    Sprite spr;
-    int chars;
-    Character *charSet;
-} Font;
-
 enum {
     KEY_NULL            = 0,
     // Alphanumeric keys
