@@ -149,6 +149,9 @@ enum {
 // ------- Defines and macros -
 #define WHITE           (Color){ 255, 255, 255, 255 }
 #define BLACK           (Color){ 0, 0, 0, 255       }
+#define DARKGRAY        (Color){ 68, 68, 68, 255 }
+#define GRAY            (Color){ 128, 128, 128, 255 }
+#define LIGHTGRAY       (Color){ 192, 192, 192, 255 }
 
 #define RED             (Color){ 255, 50, 100, 255  }
 #define ORANGE          (Color){ 255, 153, 51, 255  }
