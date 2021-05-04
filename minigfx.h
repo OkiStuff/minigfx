@@ -16,13 +16,16 @@
 #include <math.h>
 #include <time.h>
 
+#ifdef MINIGFX_IMPLEMENTATION
+
 #define STB_IMAGE_IMPLEMENTATION
-#include "external/stb_image.h"
-
 #define FONTSTASH_IMPLEMENTATION
-#include "external/fontstash.h"
-
 #define GLFONTSTASH_IMPLEMENTATION
+
+#endif
+
+#include "external/stb_image.h"
+#include "external/fontstash.h"
 #include "external/glfontstash.h"
 
 // ------- Types --------
@@ -175,6 +178,8 @@ enum {
 #define DEG2RAD (PI / 180.0)
 #define RAD2DEG (180.0 / PI)
 
+#ifdef MINIGFX_IMPLEMENTATION
+
 // ------- Variables ---------
 GLFWwindow *window;
 FONScontext *fs;
@@ -224,6 +229,8 @@ static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color c
         glEnd();
     glPopMatrix();
 }
+
+#endif
 
 // ------ Core -------
 // Window functions
@@ -277,6 +284,9 @@ void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float sc
 // ------ Text -------
 int MiniGFX_LoadFont(const char *path);
 void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);
+
+
+#ifdef MINIGFX_IMPLEMENTATION
 
 // ---------------------
 // Window functions
@@ -765,5 +775,7 @@ void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSi
     fonsSetColor(fs, c);
     fonsDrawText(fs, x, y+fontSize-6, text, NULL);
 }
+
+#endif
 
 #endif  // MINIGFX_H
