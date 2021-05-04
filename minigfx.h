@@ -10,6 +10,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "external/stb_image.h"
 
+#define FONTSTASH_IMPLEMENTATION
+#include "external/fontstash.h"
+
+#define GLFONTSTASH_IMPLEMENTATION
+#include "external/glfontstash.h"
+
 // ------- Types --------
 typedef struct Color {
     unsigned int r;
@@ -159,6 +165,7 @@ enum {
 
 // ------- Variables ---------
 GLFWwindow *window;
+FONScontext *fs;
 
 int keyExit = KEY_ESCAPE;
 int windowWidth, windowHeight;
@@ -255,6 +262,10 @@ void MiniGFX_UnloadSprite(Sprite sprite);
 void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint);
 void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float scale, Color tint);
 
+// ------ Text -------
+int MiniGFX_LoadFont(const char *path);
+void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);
+
 // ---------------------
 // Window functions
 
@@ -293,6 +304,14 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
 
     glEnable(GL_BLEND);     // enable color blending; required to work with transparencies
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
+
+    // check for fs initialization
+    fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
+    if (fs == NULL) {
+        printf("Could not create stash\n");
+        exit(1);
+    }
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();   // reset the projection matrix
@@ -307,6 +326,8 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
 // Close the OpenGL context
 void MiniGFX_CloseWindow()
 {
+    glfonsDelete(fs);
+
     glfwDestroyWindow(window);
     glfwTerminate();
 }
@@ -706,6 +727,32 @@ void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float sc
     glPopMatrix();
     
     glDisable(GL_TEXTURE_2D);    // disable texture usage
+}
+
+// ------ Text -------
+int MiniGFX_LoadFont(const char *path)
+{
+    int fn = fonsAddFont(fs, "font", path);
+
+    // Check if font was properly loaded
+    if (fn == FONS_INVALID) {
+        printf("Could not add desired font\n");
+        exit(1);
+    }
+
+    return fn;
+}
+
+void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color)
+{
+    unsigned int c = glfonsRGBA(color.r, color.g, color.b, color.a);
+
+    fonsClearState(fs);
+    fonsSetFont(fs, font);
+
+    fonsSetSize(fs, fontSize);
+    fonsSetColor(fs, c);
+    fonsDrawText(fs, x, y+fontSize-6, text, NULL);
 }
 
 #endif  // MINIGFX_H
