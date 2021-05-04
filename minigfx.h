@@ -307,7 +307,6 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
 
     glEnable(GL_BLEND);     // enable color blending; required to work with transparencies
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_CULL_FACE);
 
     // check for fs initialization
     fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
