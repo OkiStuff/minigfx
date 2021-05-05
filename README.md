@@ -9,7 +9,7 @@ Small graphics library made in C
 - Fun to use
 
 ## Features
-- Cross platform: Windows and Linux ![(check the windows folder to see how to work in Windows.)](./windows)
+- Cross platform: Windows and Linux ![check the windows folder to see how to work in Windows.](./windows)
 - Creating windows easily
 - Keyboard and mouse input
 - Draw and manage shapes (pixels, rectangles and circles)
