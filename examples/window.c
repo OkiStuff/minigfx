@@ -9,7 +9,7 @@ int main()
     while (!MiniGFX_WindowCloses()) {
         MiniGFX_StartDrawing();
         MiniGFX_ClearTo(WHITE);
-        MiniGFX_DrawText(font, "Hey! Your first window!", 10.0, 10.0, 30.0, LIGHTGRAY);
+        MiniGFX_DrawText(font, "Hey! Your first window!", 10.0, 10.0, 30.0, DARKGRAY);
         MiniGFX_StopDrawing();
     }
 
