@@ -21,6 +21,7 @@
 #include <time.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdbool.h>	// boolean type
 
 #ifdef MINIGFX_IMPLEMENTATION
 
