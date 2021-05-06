@@ -3,16 +3,16 @@
 
 int main()
 {
-    MiniGFX_CreateWindow(1024, 600, "Basic Window in minigfx");
-    int font = MiniGFX_LoadFont("font.ttf");
+    mgfx_CreateWindow(1024, 600, "Basic Window in minigfx");
+    int font = mgfx_LoadFont("font.ttf");
 
-    while (!MiniGFX_WindowCloses()) {
-        MiniGFX_StartDrawing();
-        MiniGFX_ClearTo(WHITE);
-        MiniGFX_DrawText(font, "Hey! Your first window!", 10.0, 10.0, 30.0, DARKGRAY);
-        MiniGFX_StopDrawing();
+    while (!mgfx_WindowCloses()) {
+        mgfx_StartDrawing();
+        mgfx_ClearTo(WHITE);
+        mgfx_DrawText(font, "Hey! Your first window!", 10.0, 10.0, 30.0, DARKGRAY);
+        mgfx_StopDrawing();
     }
 
-    MiniGFX_CloseWindow();
+    mgfx_CloseWindow();
     return 0;
 }

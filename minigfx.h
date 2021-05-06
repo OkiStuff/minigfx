@@ -241,57 +241,57 @@ static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color c
 
 // ------ Core -------
 // Window functions
-int MiniGFX_CreateWindow(int w, int h, const char *title);
-void MiniGFX_CloseWindow();
-int MiniGFX_WindowCloses();
-int MiniGFX_GetWindowWidth();
-int MiniGFX_GetWindowHeight();
+int mgfx_CreateWindow(int w, int h, const char *title);
+void mgfx_CloseWindow();
+int mgfx_WindowCloses();
+int mgfx_GetWindowWidth();
+int mgfx_GetWindowHeight();
 
 // Drawing functions
-void MiniGFX_StartDrawing();
-void MiniGFX_StopDrawing();
-void MiniGFX_ClearTo(Color color);
+void mgfx_StartDrawing();
+void mgfx_StopDrawing();
+void mgfx_ClearTo(Color color);
 
 // Keyboard functions
-int MiniGFX_IsKeyUp(int key);
-int MiniGFX_IsKeyHeld(int key);
-int MiniGFX_IsKeyPressed(int key);
-int MiniGFX_IsKeyReleased(int key);
+int mgfx_IsKeyUp(int key);
+int mgfx_IsKeyHeld(int key);
+int mgfx_IsKeyPressed(int key);
+int mgfx_IsKeyReleased(int key);
 
 // Mouse functions
-int MiniGFX_IsMouseButtonUp(int button);
-int MiniGFX_IsMouseButtonHeld(int button);
-int MiniGFX_IsMouseButtonPressed(int button);
-int MiniGFX_IsMouseButtonReleased(int button);
-int MiniGFX_GetMouseX();
-int MiniGFX_GetMouseY();
-vec2d MiniGFX_GetMousePosition();
+int mgfx_IsMouseButtonUp(int button);
+int mgfx_IsMouseButtonHeld(int button);
+int mgfx_IsMouseButtonPressed(int button);
+int mgfx_IsMouseButtonReleased(int button);
+int mgfx_GetMouseX();
+int mgfx_GetMouseY();
+vec2d mgfx_GetMousePosition();
 
 // Misc. functions
-int MiniGFX_RandomInt(int min, int max);
+int mgfx_RandomInt(int min, int max);
 
 // ------ Shapes -------
-void MiniGFX_DrawPixel(int x, int y, Color color);
-void MiniGFX_DrawPixelV(vec2d pos, Color color);
+void mgfx_DrawPixel(int x, int y, Color color);
+void mgfx_DrawPixelV(vec2d pos, Color color);
 
-void MiniGFX_DrawRectangle(int x, int y, int w, int h, Color color);
-void MiniGFX_DrawRectangleV(vec2d pos, vec2d size, Color color);
-void MiniGFX_DrawRectangleRec(Rectangle rec, Color color);
+void mgfx_DrawRectangle(int x, int y, int w, int h, Color color);
+void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color);
+void mgfx_DrawRectangleRec(Rectangle rec, Color color);
 
-void MiniGFX_DrawCircle(int x, int y, float radius, Color color);
-void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color);
-void MiniGFX_DrawCircleC(Circle circle, Color color);
+void mgfx_DrawCircle(int x, int y, float radius, Color color);
+void mgfx_DrawCircleV(vec2d pos, float radius, Color color);
+void mgfx_DrawCircleC(Circle circle, Color color);
 
 // ------ Sprites -------
-int MiniGFX_LoadSprite(Sprite *sprite, const char *path);
-void MiniGFX_UnloadSprite(Sprite *sprite);
-void MiniGFX_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint);
-void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint);
+int mgfx_LoadSprite(Sprite *sprite, const char *path);
+void mgfx_UnloadSprite(Sprite *sprite);
+void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint);
+void mgfx_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint);
 
 // ------ Text -------
-int MiniGFX_LoadFont(const char *path);
-void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);
-const char *MiniGFX_FormatText(const char *text, ...);
+int mgfx_LoadFont(const char *path);
+void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);
+const char *mgfx_FormatText(const char *text, ...);
 
 
 #ifdef MINIGFX_IMPLEMENTATION
@@ -300,7 +300,7 @@ const char *MiniGFX_FormatText(const char *text, ...);
 // Window functions
 
 // Initialize OpenGL context
-int MiniGFX_CreateWindow(int w, int h, const char *title)
+int mgfx_CreateWindow(int w, int h, const char *title)
 {
     // check if glfw inits properly
     if (!glfwInit()) {
@@ -355,7 +355,7 @@ int MiniGFX_CreateWindow(int w, int h, const char *title)
 }
 
 // Close the OpenGL context
-void MiniGFX_CloseWindow()
+void mgfx_CloseWindow()
 {
     glfonsDelete(fs);
 
@@ -364,13 +364,13 @@ void MiniGFX_CloseWindow()
 }
 
 // Check if the ESC key or close button is pressed
-int MiniGFX_WindowCloses()
+int mgfx_WindowCloses()
 {
     return glfwWindowShouldClose(window);
 }
 
 // Returns the window's width
-int MiniGFX_GetWindowWidth()
+int mgfx_GetWindowWidth()
 {
     glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
@@ -378,7 +378,7 @@ int MiniGFX_GetWindowWidth()
 }
 
 // Returns the window's height
-int MiniGFX_GetWindowHeight()
+int mgfx_GetWindowHeight()
 {
     glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
@@ -388,14 +388,14 @@ int MiniGFX_GetWindowHeight()
 // Drawing functions
 
 // Clear buffers
-void MiniGFX_StartDrawing()
+void mgfx_StartDrawing()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
 }
 
 // Swap buffers and poll events
-void MiniGFX_StopDrawing()
+void mgfx_StopDrawing()
 {
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -404,7 +404,7 @@ void MiniGFX_StopDrawing()
 }
 
 // Clear the background color to a certain color
-void MiniGFX_ClearTo(Color color)
+void mgfx_ClearTo(Color color)
 {
     // do some clamping calculations
     // OpenGL does its coloring things with values from 0.0 to 1.0
@@ -419,7 +419,7 @@ void MiniGFX_ClearTo(Color color)
 // Keyboard functions
 
 // Check if a key is up
-int MiniGFX_IsKeyUp(int key)
+int mgfx_IsKeyUp(int key)
 {
     if (glfwGetKey(window, key) == GLFW_RELEASE)
         return 1;
@@ -428,7 +428,7 @@ int MiniGFX_IsKeyUp(int key)
 }
 
 // Check if a key is held down
-int MiniGFX_IsKeyHeld(int key)
+int mgfx_IsKeyHeld(int key)
 {
     if (glfwGetKey(window, key) == GLFW_PRESS)
         return 1;
@@ -437,11 +437,11 @@ int MiniGFX_IsKeyHeld(int key)
 }
 
 // Check if a key is pressed once
-int MiniGFX_IsKeyPressed(int key)
+int mgfx_IsKeyPressed(int key)
 {
     int pressed = 0;
 
-    currentKeyState[key] = MiniGFX_IsKeyHeld(key);
+    currentKeyState[key] = mgfx_IsKeyHeld(key);
 
     if (currentKeyState[key] != previousKeyState[key]) {
         if (currentKeyState[key])
@@ -455,11 +455,11 @@ int MiniGFX_IsKeyPressed(int key)
 }
 
 // Check if a key is released
-int MiniGFX_IsKeyReleased(int key)
+int mgfx_IsKeyReleased(int key)
 {
     int released = 0;
 
-    currentKeyState[key] = MiniGFX_IsKeyUp(key);
+    currentKeyState[key] = mgfx_IsKeyUp(key);
 
     if (currentKeyState[key] != previousKeyState[key]) {
         if (currentKeyState[key])
@@ -475,7 +475,7 @@ int MiniGFX_IsKeyReleased(int key)
 // Mouse functions
 
 // Check if a mouse button is not being held
-int MiniGFX_IsMouseButtonUp(int button)
+int mgfx_IsMouseButtonUp(int button)
 {
     if (glfwGetKey(window, button) == GLFW_RELEASE)
         return 1;
@@ -484,7 +484,7 @@ int MiniGFX_IsMouseButtonUp(int button)
 }
 
 // Check if a mouse button is being held
-int MiniGFX_IsMouseButtonHeld(int button)
+int mgfx_IsMouseButtonHeld(int button)
 {
     if (glfwGetMouseButton(window, button) == GLFW_PRESS)
         return 1;
@@ -493,11 +493,11 @@ int MiniGFX_IsMouseButtonHeld(int button)
 }
 
 // Check if a mouse button is pressed once
-int MiniGFX_IsMouseButtonPressed(int button)
+int mgfx_IsMouseButtonPressed(int button)
 {
     int pressed = 0;
 
-    currentMouseState[button] = MiniGFX_IsMouseButtonHeld(button);
+    currentMouseState[button] = mgfx_IsMouseButtonHeld(button);
 
     if (currentMouseState[button] != previousMouseState[button]) {
         if (currentMouseState[button])
@@ -511,11 +511,11 @@ int MiniGFX_IsMouseButtonPressed(int button)
 }
 
 // Check if a mouse button is released
-int MiniGFX_IsMouseButtonReleased(int button)
+int mgfx_IsMouseButtonReleased(int button)
 {
     int released = 0;
 
-    currentMouseState[button] = MiniGFX_IsMouseButtonUp(button);
+    currentMouseState[button] = mgfx_IsMouseButtonUp(button);
 
     if (currentMouseState[button] != previousMouseState[button]) {
         if (currentMouseState[button])
@@ -529,7 +529,7 @@ int MiniGFX_IsMouseButtonReleased(int button)
 }
 
 // Returns mouse x position
-int MiniGFX_GetMouseX()
+int mgfx_GetMouseX()
 {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -538,7 +538,7 @@ int MiniGFX_GetMouseX()
 }
 
 // Returns mouse y position
-int MiniGFX_GetMouseY()
+int mgfx_GetMouseY()
 {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -546,7 +546,7 @@ int MiniGFX_GetMouseY()
     return (int)mouseY;
 }
 
-vec2d MiniGFX_GetMousePos()
+vec2d mgfx_GetMousePos()
 {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -559,7 +559,7 @@ vec2d MiniGFX_GetMousePos()
 // Misc. functions
 
 // Returns a random integer
-int MiniGFX_RandomInt(int min, int max)
+int mgfx_RandomInt(int min, int max)
 {
     if (min > max) {
         int tmp = max;
@@ -573,7 +573,7 @@ int MiniGFX_RandomInt(int min, int max)
 // ------ Shapes -------
 
 // Draw a single pixel
-void MiniGFX_DrawPixel(int x, int y, Color color)
+void mgfx_DrawPixel(int x, int y, Color color)
 {
     glBegin(GL_POINTS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -582,7 +582,7 @@ void MiniGFX_DrawPixel(int x, int y, Color color)
 }
 
 // Draw a single pixel with vec2d type
-void MiniGFX_DrawPixelV(vec2d pos, Color color)
+void mgfx_DrawPixelV(vec2d pos, Color color)
 {
     glBegin(GL_POINTS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -591,7 +591,7 @@ void MiniGFX_DrawPixelV(vec2d pos, Color color)
 }
 
 // Draw a rectangle
-void MiniGFX_DrawRectangle(int x, int y, int w, int h, Color color)
+void mgfx_DrawRectangle(int x, int y, int w, int h, Color color)
 {
     glBegin(GL_QUADS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -603,7 +603,7 @@ void MiniGFX_DrawRectangle(int x, int y, int w, int h, Color color)
 }
 
 // Draw a rectangle with vec2d type
-void MiniGFX_DrawRectangleV(vec2d pos, vec2d size, Color color)
+void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color)
 {
     glBegin(GL_QUADS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -615,7 +615,7 @@ void MiniGFX_DrawRectangleV(vec2d pos, vec2d size, Color color)
 }
 
 // Draw a rectangle with Rectangle type
-void MiniGFX_DrawRectangleRec(Rectangle rec, Color color)
+void mgfx_DrawRectangleRec(Rectangle rec, Color color)
 {
     glBegin(GL_QUADS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -627,7 +627,7 @@ void MiniGFX_DrawRectangleRec(Rectangle rec, Color color)
 }
 
 // Draw a circle
-void MiniGFX_DrawCircle(int x, int y, float radius, Color color)
+void mgfx_DrawCircle(int x, int y, float radius, Color color)
 {
     // Avoid division by 0
     if (radius <= 0) radius = 0.1f;
@@ -648,21 +648,21 @@ void MiniGFX_DrawCircle(int x, int y, float radius, Color color)
 }
 
 // Draw a circle with vec2d type
-void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color)
+void mgfx_DrawCircleV(vec2d pos, float radius, Color color)
 {
-    MiniGFX_DrawCircle((float)pos.x, (float)pos.y, radius, color);
+    mgfx_DrawCircle((float)pos.x, (float)pos.y, radius, color);
 }
 
 // Draw a circle with Circle type
-void MiniGFX_DrawCircleC(Circle circle, Color color)
+void mgfx_DrawCircleC(Circle circle, Color color)
 {
-    MiniGFX_DrawCircle(circle.x, circle.y, circle.radius, color);
+    mgfx_DrawCircle(circle.x, circle.y, circle.radius, color);
 }
 
 // ------ Sprites -------
 
 // Load sprite into GPU
-int MiniGFX_LoadSprite(Sprite *sprite, const char *path)
+int mgfx_LoadSprite(Sprite *sprite, const char *path)
 {
     int imgWidth, imgHeight, imgBpp;
 
@@ -699,13 +699,13 @@ int MiniGFX_LoadSprite(Sprite *sprite, const char *path)
 }
 
 // Unload sprite from GPU
-void MiniGFX_UnloadSprite(Sprite *sprite)
+void mgfx_UnloadSprite(Sprite *sprite)
 {
     glDeleteTextures(1, &sprite->ID);
 }
 
 // Draw a sprite
-void MiniGFX_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint)
+void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
 
@@ -729,7 +729,7 @@ void MiniGFX_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint)
 }
 
 // Draw part of a sprite
-void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint)
+void mgfx_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
     
@@ -767,7 +767,7 @@ void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float s
 // ------ Text -------
 
 // Load font from path
-int MiniGFX_LoadFont(const char *path)
+int mgfx_LoadFont(const char *path)
 {
     int fn = fonsAddFont(fs, "font", path);
 
@@ -781,7 +781,7 @@ int MiniGFX_LoadFont(const char *path)
 }
 
 // Draw text with font specified, text, x, y, size and color
-void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color)
+void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color)
 {
     unsigned int c = glfonsRGBA(color.r, color.g, color.b, color.a);
 
@@ -794,7 +794,7 @@ void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSi
 }
 
 // Formatting of text with variables to embed
-const char *MiniGFX_FormatText(const char *text, ...)
+const char *mgfx_FormatText(const char *text, ...)
 {
     int length = strlen(text);
     char *buffer = malloc(length + 20);     // add 20 extra characters... for safety

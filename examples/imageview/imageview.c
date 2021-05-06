@@ -8,21 +8,21 @@ Sprite image;
 
 int main(int argc, char *argv[])
 {
-    MiniGFX_CreateWindow(1920, 1080, "Imageview");
-    MiniGFX_LoadSprite(&image, argv[1]);
-    int font = MiniGFX_LoadFont("/usr/share/fonts/ubuntu/UbuntuMono-R.ttf");
+    mgfx_CreateWindow(1920, 1080, "Imageview");
+    mgfx_LoadSprite(&image, argv[1]);
+    int font = mgfx_LoadFont("/usr/share/fonts/ubuntu/UbuntuMono-R.ttf");
 
-    while (!MiniGFX_WindowCloses()) {
-        MiniGFX_StartDrawing();
-        MiniGFX_DrawSprite(&image,
-                           MiniGFX_GetWindowWidth()/2-image.width/2,
-                           MiniGFX_GetWindowHeight()/2-image.height/2,
+    while (!mgfx_WindowCloses()) {
+        mgfx_StartDrawing();
+        mgfx_DrawSprite(&image,
+                           mgfx_GetWindowWidth()/2-image.width/2,
+                           mgfx_GetWindowHeight()/2-image.height/2,
                            1.0f, WHITE);
-	MiniGFX_DrawText(font, "minigfx imageview demo", 10, 10, 40, WHITE);
-        MiniGFX_StopDrawing();
+	mgfx_DrawText(font, "minigfx imageview demo", 10, 10, 40, WHITE);
+        mgfx_StopDrawing();
     }
 
-    MiniGFX_UnloadSprite(&image);
-    MiniGFX_CloseWindow();
+    mgfx_UnloadSprite(&image);
+    mgfx_CloseWindow();
     return 0;
 }

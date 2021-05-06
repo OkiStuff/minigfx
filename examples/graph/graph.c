@@ -21,20 +21,20 @@ const int offsetY = height/2;
 
 int main()
 {
-    MiniGFX_CreateWindow(width, height, "Graphs");
+    mgfx_CreateWindow(width, height, "Graphs");
     int selected = 0;
 	float step = 0.01;
 
-    while (!MiniGFX_WindowCloses()) {
-		if (MiniGFX_IsKeyPressed(KEY_UP)) {
+    while (!mgfx_WindowCloses()) {
+		if (mgfx_IsKeyPressed(KEY_UP)) {
 			selected++;
-		} else if (MiniGFX_IsKeyPressed(KEY_DOWN)) {
+		} else if (mgfx_IsKeyPressed(KEY_DOWN)) {
 			selected--;
 		}
 
-		if (MiniGFX_IsKeyHeld(KEY_RIGHT)) {
+		if (mgfx_IsKeyHeld(KEY_RIGHT)) {
 			step += 0.001;
-		} else if (MiniGFX_IsKeyHeld(KEY_LEFT)) {
+		} else if (mgfx_IsKeyHeld(KEY_LEFT)) {
 			step -= 0.001;
 		}
 
@@ -42,9 +42,9 @@ int main()
 		if (selected <= 0) selected = 0;
 		if (selected >= 10) selected = 10;
 
-        MiniGFX_StartDrawing();
+        mgfx_StartDrawing();
         
-        MiniGFX_ClearTo(BLACK);
+        mgfx_ClearTo(BLACK);
         DrawXAxis();
         DrawYAxis();
 
@@ -64,16 +64,16 @@ int main()
 		default: break;
 	}
         
-        MiniGFX_StopDrawing();
+        mgfx_StopDrawing();
     }
 
-    MiniGFX_CloseWindow();
+    mgfx_CloseWindow();
     return 0;
 }
 
 void Plot(int x, int y, Color color)
 {
-    MiniGFX_DrawPixel((offsetX-x), (offsetY-y), color);
+    mgfx_DrawPixel((offsetX-x), (offsetY-y), color);
 }
 
 void DrawXAxis()
@@ -109,7 +109,7 @@ void YEqSinX(float a, float b, float step)
 {
 	for (float x = -400.0; x < 400.0; x += step) {
 		float y = sin(a*x) * b * cos(1-x) + sin(a) * 50;
-		Plot(x, y, (Color){ MiniGFX_RandomInt(0, 255), MiniGFX_RandomInt(0, 255), MiniGFX_RandomInt(0, 255), 255 });
+		Plot(x, y, (Color){ mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), 255 });
 	}
 }
 
@@ -117,6 +117,6 @@ void TrigoTan(float step)
 {
 	for (float x = -400.0; x < 400.0; x += step) {
 		float y = tan(x*345);
-		Plot(x, y, (Color){ MiniGFX_RandomInt(0, 255), MiniGFX_RandomInt(0, 255), MiniGFX_RandomInt(0, 255), 255 });
+		Plot(x, y, (Color){ mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), 255 });
 	}
 }

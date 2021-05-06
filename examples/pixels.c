@@ -5,21 +5,21 @@ int main()
 {
     const int screenWidth = 1024;
     const int screenHeight = 600;
-    MiniGFX_CreateWindow(screenWidth, screenHeight, "Lots of pixels in minigfx");
+    mgfx_CreateWindow(screenWidth, screenHeight, "Lots of pixels in minigfx");
 
-    while (!MiniGFX_WindowCloses()) {
-        MiniGFX_StartDrawing();
-        MiniGFX_ClearTo(WHITE);
+    while (!mgfx_WindowCloses()) {
+        mgfx_StartDrawing();
+        mgfx_ClearTo(WHITE);
 
         for (int x = 0; x < screenWidth; x++)
             for (int y = 0; y < screenHeight; y++) {
-                Color color = (Color){ rand()%255, rand()%255, rand()%255, 255 };
-                MiniGFX_DrawPixel(x, y, color);
+                Color color = (Color){ mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), 255 };
+                mgfx_DrawPixel(x, y, color);
             }
         
-        MiniGFX_StopDrawing();
+        mgfx_StopDrawing();
     }
 
-    MiniGFX_CloseWindow();
+    mgfx_CloseWindow();
     return 0;
 }
