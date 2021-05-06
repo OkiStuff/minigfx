@@ -5,7 +5,8 @@ I'm not a big fan of Windows... But I found a way to compile minigfx application
 Before you start you'll need some glfw folders:
 - include
 - lib
-This will allow for linking glfw3 and making minigfx work
+
+These folders will allow for linking glfw3 and making minigfx work
 
 **You will need three folders in your project: include, lib and external, as well as minigfx.h. All of these files should be put in one single place, not minigfx.h in a src folder, or the include folder somewhere else; they should all be in the same place**
 
