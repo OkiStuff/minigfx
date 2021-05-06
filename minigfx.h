@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <stdarg.h>
+#include <string.h>
 
 #ifdef MINIGFX_IMPLEMENTATION
 
@@ -288,6 +290,7 @@ void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float s
 // ------ Text -------
 int MiniGFX_LoadFont(const char *path);
 void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);
+const char *MiniGFX_FormatText(const char *text, ...);
 
 
 #ifdef MINIGFX_IMPLEMENTATION
@@ -761,6 +764,8 @@ void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float s
 }
 
 // ------ Text -------
+
+// Load font from path
 int MiniGFX_LoadFont(const char *path)
 {
     int fn = fonsAddFont(fs, "font", path);
@@ -774,6 +779,7 @@ int MiniGFX_LoadFont(const char *path)
     return fn;
 }
 
+// Draw text with font specified, text, x, y, size and color
 void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSize, Color color)
 {
     unsigned int c = glfonsRGBA(color.r, color.g, color.b, color.a);
@@ -784,6 +790,20 @@ void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSi
     fonsSetSize(fs, fontSize);
     fonsSetColor(fs, c);
     fonsDrawText(fs, x, y+fontSize-6, text, NULL);
+}
+
+// Formatting of text with variables to embed
+const char *MiniGFX_FormatText(const char *text, ...)
+{
+    int length = strlen(text);
+    char *buffer = malloc(length + 20);     // add 20 extra characters... for safety
+
+    va_list args;
+    va_start(args, text);
+    vsprintf(buffer, text, args);
+    va_end(args);
+
+    return buffer;
 }
 
 #endif
