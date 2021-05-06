@@ -21,9 +21,13 @@ Small graphics library made in C
 OpenGL, GLFW
 
 ## Compiling a minigfx application
-minigfx requires OpenGL. Here's a basic compilation command in Unix-like systems (where supported)
+Unix systems
 ```
 $ gcc main.c -lGL -lglfw -lm
+```
+Windows systems
+```
+$ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -lwinmm -o main.exe
 ```
 
 ## minigfx example application
