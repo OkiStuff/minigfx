@@ -13,7 +13,7 @@ These folders will allow for linking glfw3 and making minigfx work
 Assuming you have MinGW installed [(or else check here...)](http://mingw-w64.org/doku.php/download/mingw-builds) and set up properly, the command is pretty simple. I recommend setting up a script to compile your applications.
 
 ```
-$ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -lwinmm -o main
+$ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -lwinmm -o main.exe
 ```
 And it will work just as if it was Linux.
 ![](./resources/windows.png)
