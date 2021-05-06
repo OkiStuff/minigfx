@@ -241,57 +241,57 @@ static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color c
 
 // ------ Core -------
 // Window functions
-int mgfx_CreateWindow(int w, int h, const char *title);
-void mgfx_CloseWindow();
-int mgfx_WindowCloses();
-int mgfx_GetWindowWidth();
-int mgfx_GetWindowHeight();
+int mgfx_CreateWindow(int w, int h, const char *title);                                             // Initialize OpenGL context
+void mgfx_CloseWindow();                                                                            // Close the OpenGL context
+int mgfx_WindowCloses();                                                                            // Check if the ESC key or close button is pressed
+int mgfx_GetWindowWidth();                                                                          // Returns the window's width
+int mgfx_GetWindowHeight();                                                                         // Returns the window's height
 
 // Drawing functions
-void mgfx_StartDrawing();
-void mgfx_StopDrawing();
-void mgfx_ClearTo(Color color);
+void mgfx_StartDrawing();                                                                           // Clear buffers
+void mgfx_StopDrawing();                                                                            // Swap buffers and poll events
+void mgfx_ClearTo(Color color);                                                                     // Clear the background color to a certain color
 
 // Keyboard functions
-int mgfx_IsKeyUp(int key);
-int mgfx_IsKeyHeld(int key);
-int mgfx_IsKeyPressed(int key);
-int mgfx_IsKeyReleased(int key);
+int mgfx_IsKeyUp(int key);                                                                          // Check if a key is up (not held)
+int mgfx_IsKeyHeld(int key);                                                                        // Check if a key is held
+int mgfx_IsKeyPressed(int key);                                                                     // Check if a key is pressed once
+int mgfx_IsKeyReleased(int key);                                                                    // Check if a key is released
 
 // Mouse functions
-int mgfx_IsMouseButtonUp(int button);
-int mgfx_IsMouseButtonHeld(int button);
-int mgfx_IsMouseButtonPressed(int button);
-int mgfx_IsMouseButtonReleased(int button);
-int mgfx_GetMouseX();
-int mgfx_GetMouseY();
-vec2d mgfx_GetMousePosition();
+int mgfx_IsMouseButtonUp(int button);                                                               // Check if a mouse button is not being held
+int mgfx_IsMouseButtonHeld(int button);                                                             // Check if a mouse button is being held
+int mgfx_IsMouseButtonPressed(int button);                                                          // Check if a mouse button is pressed once
+int mgfx_IsMouseButtonReleased(int button);                                                         // Check if a mouse button is released
+int mgfx_GetMouseX();                                                                               // Returns mouse x position
+int mgfx_GetMouseY();                                                                               // Returns mouse y position
+vec2d mgfx_GetMousePosition();                                                                      // Returns mouse position
 
 // Misc. functions
-int mgfx_RandomInt(int min, int max);
+int mgfx_RandomInt(int min, int max);                                                               // Returns a random integer
 
 // ------ Shapes -------
-void mgfx_DrawPixel(int x, int y, Color color);
-void mgfx_DrawPixelV(vec2d pos, Color color);
+void mgfx_DrawPixel(int x, int y, Color color);                                                     // Draw a single pixel
+void mgfx_DrawPixelV(vec2d pos, Color color);                                                       // Draw a single pixel with vec2d type
 
-void mgfx_DrawRectangle(int x, int y, int w, int h, Color color);
-void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color);
-void mgfx_DrawRectangleRec(Rectangle rec, Color color);
+void mgfx_DrawRectangle(int x, int y, int w, int h, Color color);                                   // Draw a rectangle
+void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color);                                       // Draw a rectangle with vec2d type
+void mgfx_DrawRectangleRec(Rectangle rec, Color color);                                             // Draw a rectangle with Rectangle type
 
-void mgfx_DrawCircle(int x, int y, float radius, Color color);
-void mgfx_DrawCircleV(vec2d pos, float radius, Color color);
-void mgfx_DrawCircleC(Circle circle, Color color);
+void mgfx_DrawCircle(int x, int y, float radius, Color color);                                      // Draw a circle
+void mgfx_DrawCircleV(vec2d pos, float radius, Color color);                                        // Draw a cricle with vec2d type
+void mgfx_DrawCircleC(Circle circle, Color color);                                                  // Draw a circle with Circle type
 
 // ------ Sprites -------
-int mgfx_LoadSprite(Sprite *sprite, const char *path);
-void mgfx_UnloadSprite(Sprite *sprite);
-void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint);
-void mgfx_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint);
+int mgfx_LoadSprite(Sprite *sprite, const char *path);                                              // Load sprite into GPU
+void mgfx_UnloadSprite(Sprite *sprite);                                                             // Unload sprite from GPU
+void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint);                        // Draw a sprite
+void mgfx_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint);     // Draw part of a sprite
 
 // ------ Text -------
-int mgfx_LoadFont(const char *path);
-void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);
-const char *mgfx_FormatText(const char *text, ...);
+int mgfx_LoadFont(const char *path);                                                                // Load font from path
+void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);      // Draw a piece of text
+const char *mgfx_FormatText(const char *text, ...);                                                 // Formatting of text with variables to embed
 
 
 #ifdef MINIGFX_IMPLEMENTATION
@@ -418,7 +418,7 @@ void mgfx_ClearTo(Color color)
 
 // Keyboard functions
 
-// Check if a key is up
+// Check if a key is up (not held)
 int mgfx_IsKeyUp(int key)
 {
     if (glfwGetKey(window, key) == GLFW_RELEASE)
@@ -546,6 +546,7 @@ int mgfx_GetMouseY()
     return (int)mouseY;
 }
 
+// Returns mouse position
 vec2d mgfx_GetMousePos()
 {
     double mouseX, mouseY;
@@ -780,7 +781,7 @@ int mgfx_LoadFont(const char *path)
     return fn;
 }
 
-// Draw text with font specified, text, x, y, size and color
+// Draw a piece of text
 void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color)
 {
     unsigned int c = glfonsRGBA(color.r, color.g, color.b, color.a);
