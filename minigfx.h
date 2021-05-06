@@ -238,7 +238,7 @@ static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color c
 
 // ------ Core -------
 // Window functions
-void MiniGFX_CreateWindow(int w, int h, const char *title);
+int MiniGFX_CreateWindow(int w, int h, const char *title);
 void MiniGFX_CloseWindow();
 int MiniGFX_WindowCloses();
 int MiniGFX_GetWindowWidth();
@@ -280,10 +280,10 @@ void MiniGFX_DrawCircleV(vec2d pos, float radius, Color color);
 void MiniGFX_DrawCircleC(Circle circle, Color color);
 
 // ------ Sprites -------
-Sprite MiniGFX_LoadSprite(const char *path);
-void MiniGFX_UnloadSprite(Sprite sprite);
-void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint);
-void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float scale, Color tint);
+int MiniGFX_LoadSprite(Sprite *sprite, const char *path);
+void MiniGFX_UnloadSprite(Sprite *sprite);
+void MiniGFX_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint);
+void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint);
 
 // ------ Text -------
 int MiniGFX_LoadFont(const char *path);
@@ -296,11 +296,12 @@ void MiniGFX_DrawText(int font, const char *text, float x, float y, float fontSi
 // Window functions
 
 // Initialize OpenGL context
-void MiniGFX_CreateWindow(int w, int h, const char *title)
+int MiniGFX_CreateWindow(int w, int h, const char *title)
 {
     // check if glfw inits properly
     if (!glfwInit()) {
-        exit(1);
+        printf("Could not initialize GLFW\n");
+        return -1;
     }
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -308,8 +309,9 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
     // initialize the window
     window = glfwCreateWindow(w, h, title, NULL, NULL);
     if (!window) {
+        printf("Could not initialize window properly\n");
         glfwTerminate();
-        exit(1);
+        return -1;
     }
 
     // set hints and callbacks
@@ -335,7 +337,7 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
     fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
     if (fs == NULL) {
         printf("Could not create stash\n");
-        exit(1);
+        return -1;
     }
 
     glMatrixMode(GL_PROJECTION);
@@ -345,7 +347,7 @@ void MiniGFX_CreateWindow(int w, int h, const char *title)
     glMatrixMode(GL_MODELVIEW);     // THIS guy took me more time than necessary.
     glLoadIdentity();   // reset the modelview matrix
 
-    srand(time(NULL));  // initialize timer (done for getting random values)
+    srand(time(NULL));  // seed the random number generator
 }
 
 // Close the OpenGL context
@@ -656,13 +658,17 @@ void MiniGFX_DrawCircleC(Circle circle, Color color)
 // ------ Sprites -------
 
 // Load sprite into GPU
-Sprite MiniGFX_LoadSprite(const char *path)
+int MiniGFX_LoadSprite(Sprite *sprite, const char *path)
 {
-    Sprite sprite;
     int imgWidth, imgHeight, imgBpp;
 
     // Loading image in question
     byte *data = stbi_load(path, &imgWidth, &imgHeight, &imgBpp, 4);
+
+    if (data == NULL) {
+        printf("Could not load sprite properly\n");
+        return -1;
+    }
 
     // Convert data into an OpenGL texture
     GLuint id;
@@ -681,25 +687,25 @@ Sprite MiniGFX_LoadSprite(const char *path)
     // Free the loaded data from RAM
     stbi_image_free(data);
 
-    sprite.ID = id;
-    sprite.width = imgWidth;
-    sprite.height = imgHeight;
+    sprite->ID = id;
+    sprite->width = imgWidth;
+    sprite->height = imgHeight;
 
-    return sprite;
+    return 0;
 }
 
 // Unload sprite from GPU
-void MiniGFX_UnloadSprite(Sprite sprite)
+void MiniGFX_UnloadSprite(Sprite *sprite)
 {
-    glDeleteTextures(1, &sprite.ID);
+    glDeleteTextures(1, &sprite->ID);
 }
 
 // Draw a sprite
-void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint)
+void MiniGFX_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
 
-    glBindTexture(GL_TEXTURE_2D, sprite.ID);
+    glBindTexture(GL_TEXTURE_2D, sprite->ID);
 
     glPushMatrix();
         glTranslatef(x, y, 0);
@@ -709,9 +715,9 @@ void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint)
             glColor4ub(tint.r, tint.g, tint.b, tint.a);
             glNormal3f(0.0f, 0.0f, 1.0f);                                       // Pointing towards viewer
             glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, 0.0f);                   // Bottom-left corner of texture and quad
-            glTexCoord2f(1.0f, 0.0f); glVertex2f(sprite.width, 0.0f);           // Bottom-right corner of texture and quad
-            glTexCoord2f(1.0f, 1.0f); glVertex2f(sprite.width, sprite.height);  // Top-right corner of texture and quad
-            glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, sprite.height);          // Top-left corner of texture and quad
+            glTexCoord2f(1.0f, 0.0f); glVertex2f(sprite->width, 0.0f);           // Bottom-right corner of texture and quad
+            glTexCoord2f(1.0f, 1.0f); glVertex2f(sprite->width, sprite->height);  // Top-right corner of texture and quad
+            glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, sprite->height);          // Top-left corner of texture and quad
         glEnd();
     glPopMatrix();
 
@@ -719,11 +725,11 @@ void MiniGFX_DrawSprite(Sprite sprite, int x, int y, float scale, Color tint)
 }
 
 // Draw part of a sprite
-void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float scale, Color tint)
+void MiniGFX_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
     
-    glBindTexture(GL_TEXTURE_2D, sprite.ID);
+    glBindTexture(GL_TEXTURE_2D, sprite->ID);
     
     glPushMatrix();
         glTranslatef(pos.x, pos.y, 0);
@@ -734,19 +740,19 @@ void MiniGFX_DrawPartialSprite(Sprite sprite, Rectangle rec, vec2d pos, float sc
             glNormal3f(0.0, 0.0, 1.0);
 
             // Bottom-left corner for sprite and quad
-            glTexCoord2f((float)rec.x / sprite.width, (float)rec.y / sprite.height); 
+            glTexCoord2f((float)rec.x / sprite->width, (float)rec.y / sprite->height); 
             glVertex2f(0.0f, 0.0f);
         
             // Bottom-right corner for sprite and quad
-            glTexCoord2f((float)(rec.x + rec.w) / sprite.width, (float)rec.y / sprite.height);
+            glTexCoord2f((float)(rec.x + rec.w) / sprite->width, (float)rec.y / sprite->height);
             glVertex2f(rec.w, 0.0f);
                 
             // Top-right corner for sprite and quad
-            glTexCoord2f((float)(rec.x + rec.w) / sprite.width, (float)(rec.y + rec.h) / sprite.height); 
+            glTexCoord2f((float)(rec.x + rec.w) / sprite->width, (float)(rec.y + rec.h) / sprite->height); 
             glVertex2f(rec.w, rec.h);
                 
             // Top-left corner for sprite and quad
-            glTexCoord2f((float)rec.x / sprite.width, (float)(rec.y + rec.h) / sprite.height);
+            glTexCoord2f((float)rec.x / sprite->width, (float)(rec.y + rec.h) / sprite->height);
             glVertex2f(0.0f, rec.h);
         glEnd();
     glPopMatrix();
