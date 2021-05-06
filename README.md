@@ -9,7 +9,7 @@ Small graphics library made in C
 - Fun to use
 
 ## Features
-- Cross platform: Windows and Linux. To see how to work with Windows, check out WINDOWS.md
+- Cross platform: Windows and Linux. To see how to work with Windows, check out the wiki
 - Creating windows easily
 - Keyboard and mouse input
 - Draw and manage shapes (pixels, rectangles and circles)
@@ -31,7 +31,7 @@ $ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -lwinmm -o main.exe
 ```
 
 ## minigfx example application
-Please check APPS.md to see how to work with minigfx properly.
+Please check the wiki to see how to work with minigfx properly.
 ```
 #define MINIGFX_IMPLEMENTATION
 #include "../minigfx.h"
