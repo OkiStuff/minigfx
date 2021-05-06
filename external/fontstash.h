@@ -33,6 +33,8 @@ extern "C" {
 #endif
 
 #define FONS_INVALID -1
+#define MAX_PATH	260
+#define CP_UTF8	65001
 
 enum FONSflags {
 	FONS_ZERO_TOPLEFT = 1,
