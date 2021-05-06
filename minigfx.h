@@ -10,7 +10,7 @@
 #ifndef MINIGFX_H
 #define MINIGFX_H
 
-#if defined(__WIN32)
+#if defined(_WIN32)
     #include "include/GLFW/glfw3.h"
 #else
     #include <GLFW/glfw3.h>
