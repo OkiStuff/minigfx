@@ -2,7 +2,7 @@
  * minigfx: a small, simple and intuitive graphics library made in C
  * Made by Laurentino Luna (laurenloco) in 2021
  *
- * Version: 1.0
+ * Version: 1.0.3
  *
  * minigfx is licensed under zlib. Check LICENSE for more
 */
