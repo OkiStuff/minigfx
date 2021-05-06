@@ -10,4 +10,4 @@ Assuming you have MinGW installed [(or else check here...)](http://mingw-w64.org
 $ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -lwinmm -o main
 ```
 And it will work just as if it was Linux.
-![](./windows.PNG)
+![](./resources/windows.png)
