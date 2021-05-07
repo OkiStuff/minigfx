@@ -1,4 +1,3 @@
-#define MINIGFX_IMPLEMENTATION
 #include "../minigfx.h"
 
 int main()

@@ -1,4 +1,3 @@
-#define MINIGFX_IMPLEMENTATION
 #include "../../minigfx.h"
 #include <math.h>
 
