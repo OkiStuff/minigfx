@@ -36,33 +36,34 @@
 #include "external/glfontstash.h"
 
 // ------- Types --------
-typedef struct Color {
+typedef struct mgfx_color {
     unsigned int r;
     unsigned int g;
     unsigned int b;
     unsigned int a;
-} Color;
+} mgfx_color;
 
-typedef struct vec2d {
+typedef struct mgfx_vec2d {
     float x, y;
-} vec2d;
+} mgfx_vec2d;
 
-typedef struct Rectangle {
+typedef struct mgfx_rec {
     float x, y;
     int w, h;
-} Rectangle;
+} mgfx_rec;
 
-typedef struct Circle {
+typedef struct mgfx_circle {
     int x, y;
     float radius;
-} Circle;
+} mgfx_circle;
 
-typedef struct Sprite {
+typedef struct mgfx_sprite {
     unsigned int ID;
     int width, height;
-} Sprite;
+} mgfx_sprite;
 
 typedef unsigned char byte;
+typedef int mgfx_font;
 
 enum {
     KEY_NULL            = 0,
@@ -166,20 +167,20 @@ enum {
 };
 
 // ------- Defines and macros -
-#define WHITE           (Color){ 255, 255, 255, 255 }
-#define BLACK           (Color){ 0, 0, 0, 255       }
-#define DARKGRAY        (Color){ 68, 68, 68, 255 }
-#define GRAY            (Color){ 128, 128, 128, 255 }
-#define LIGHTGRAY       (Color){ 192, 192, 192, 255 }
+#define MGFX_WHITE           (mgfx_color){ 255, 255, 255, 255 }
+#define MGFX_BLACK           (mgfx_color){ 0, 0, 0, 255       }
+#define MGFX_DARKGRAY        (mgfx_color){ 68, 68, 68, 255 }
+#define MGFX_GRAY            (mgfx_color){ 128, 128, 128, 255 }
+#define MGFX_LIGHTGRAY       (mgfx_color){ 192, 192, 192, 255 }
 
-#define RED             (Color){ 255, 50, 100, 255  }
-#define ORANGE          (Color){ 255, 153, 51, 255  }
-#define YELLOW          (Color){ 255, 201, 90, 255  }
-#define GREEN           (Color){ 102, 255, 102, 255 }
-#define BLUE            (Color){ 0, 128, 255, 255   }
-#define PURPLE          (Color){ 178, 102, 255, 255 }
-#define PINK            (Color){ 255, 204, 255, 255 }
-#define MAGENTA         (Color){ 255, 102, 255, 255 }
+#define MGFX_RED             (mgfx_color){ 255, 50, 100, 255  }
+#define MGFX_ORANGE          (mgfx_color){ 255, 153, 51, 255  }
+#define MGFX_YELLOW          (mgfx_color){ 255, 201, 90, 255  }
+#define MGFX_GREEN           (mgfx_color){ 102, 255, 102, 255 }
+#define MGFX_BLUE            (mgfx_color){ 0, 128, 255, 255   }
+#define MGFX_PURPLE          (mgfx_color){ 178, 102, 255, 255 }
+#define MGFX_PINK            (mgfx_color){ 255, 204, 255, 255 }
+#define MGFX_MAGENTA         (mgfx_color){ 255, 102, 255, 255 }
 
 #define PI 3.14159265358979323846
 #define DEG2RAD (PI / 180.0)
@@ -215,7 +216,7 @@ static void ErrorCallback(int error, const char *description)
 
 // Draw a polygon of N sides
 // https://github.com/raysan5/raylib/blob/1.0.4/src/shapes.c
-static void DrawPoly(vec2d pos, int sides, float radius, float rotation, Color color)
+static void DrawPoly(mgfx_vec2d pos, int sides, float radius, float rotation, mgfx_color color)
 {
     if (sides <= 3) sides = 3;
 
@@ -250,7 +251,7 @@ int mgfx_GetWindowHeight();                                                     
 // Drawing functions
 void mgfx_StartDrawing();                                                                           // Clear buffers
 void mgfx_StopDrawing();                                                                            // Swap buffers and poll events
-void mgfx_ClearTo(Color color);                                                                     // Clear the background color to a certain color
+void mgfx_ClearTo(mgfx_color color);                                                                // Clear the background color to a certain color
 
 // Keyboard functions
 int mgfx_IsKeyUp(int key);                                                                          // Check if a key is up (not held)
@@ -265,32 +266,32 @@ int mgfx_IsMouseButtonPressed(int button);                                      
 int mgfx_IsMouseButtonReleased(int button);                                                         // Check if a mouse button is released
 int mgfx_GetMouseX();                                                                               // Returns mouse x position
 int mgfx_GetMouseY();                                                                               // Returns mouse y position
-vec2d mgfx_GetMousePosition();                                                                      // Returns mouse position
+mgfx_vec2d mgfx_GetMousePosition();                                                                 // Returns mouse position
 
 // Misc. functions
 int mgfx_RandomInt(int min, int max);                                                               // Returns a random integer
 
 // ------ Shapes -------
-void mgfx_DrawPixel(int x, int y, Color color);                                                     // Draw a single pixel
-void mgfx_DrawPixelV(vec2d pos, Color color);                                                       // Draw a single pixel with vec2d type
+void mgfx_DrawPixel(int x, int y, mgfx_color color);                                                // Draw a single pixel
+void mgfx_DrawPixelV(mgfx_vec2d pos, mgfx_color color);                                             // Draw a single pixel with vec2d type
 
-void mgfx_DrawRectangle(int x, int y, int w, int h, Color color);                                   // Draw a rectangle
-void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color);                                       // Draw a rectangle with vec2d type
-void mgfx_DrawRectangleRec(Rectangle rec, Color color);                                             // Draw a rectangle with Rectangle type
+void mgfx_DrawRectangle(int x, int y, int w, int h, mgfx_color color);                              // Draw a rectangle
+void mgfx_DrawRectangleV(mgfx_vec2d pos, mgfx_vec2d size, mgfx_color color);                        // Draw a rectangle with vec2d type
+void mgfx_DrawRectangleRec(mgfx_rec rec, mgfx_color color);                                         // Draw a rectangle with Rectangle type
 
-void mgfx_DrawCircle(int x, int y, float radius, Color color);                                      // Draw a circle
-void mgfx_DrawCircleV(vec2d pos, float radius, Color color);                                        // Draw a cricle with vec2d type
-void mgfx_DrawCircleC(Circle circle, Color color);                                                  // Draw a circle with Circle type
+void mgfx_DrawCircle(int x, int y, float radius, mgfx_color color);                                 // Draw a circle
+void mgfx_DrawCircleV(mgfx_vec2d pos, float radius, mgfx_color color);                              // Draw a circle with vec2d type
+void mgfx_DrawCircleC(mgfx_circle circle, mgfx_color color);                                        // Draw a circle with Circle type
 
 // ------ Sprites -------
-int mgfx_LoadSprite(Sprite *sprite, const char *path);                                              // Load sprite into GPU
-void mgfx_UnloadSprite(Sprite *sprite);                                                             // Unload sprite from GPU
-void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint);                        // Draw a sprite
-void mgfx_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint);     // Draw part of a sprite
+int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path);                                         // Load sprite into GPU
+void mgfx_UnloadSprite(mgfx_sprite *sprite);                                                        // Unload sprite from GPU
+void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, float scale, mgfx_color tint);              // Draw a sprite
+void mgfx_DrawPartialSprite(mgfx_sprite *sprite, mgfx_rec rec, mgfx_vec2d pos, float scale, mgfx_color tint);// Draw part of a sprite
 
 // ------ Text -------
 int mgfx_LoadFont(const char *path);                                                                // Load font from path
-void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color);      // Draw a piece of text
+void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, mgfx_color color); // Draw a piece of text
 const char *mgfx_FormatText(const char *text, ...);                                                 // Formatting of text with variables to embed
 
 
@@ -404,7 +405,7 @@ void mgfx_StopDrawing()
 }
 
 // Clear the background color to a certain color
-void mgfx_ClearTo(Color color)
+void mgfx_ClearTo(mgfx_color color)
 {
     // do some clamping calculations
     // OpenGL does its coloring things with values from 0.0 to 1.0
@@ -547,12 +548,12 @@ int mgfx_GetMouseY()
 }
 
 // Returns mouse position
-vec2d mgfx_GetMousePos()
+mgfx_vec2d mgfx_GetMousePos()
 {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
 
-    vec2d position = (vec2d){ mouseX, mouseY };
+    mgfx_vec2d position = (mgfx_vec2d){ mouseX, mouseY };
 
     return position;
 }
@@ -574,7 +575,7 @@ int mgfx_RandomInt(int min, int max)
 // ------ Shapes -------
 
 // Draw a single pixel
-void mgfx_DrawPixel(int x, int y, Color color)
+void mgfx_DrawPixel(int x, int y, mgfx_color color)
 {
     glBegin(GL_POINTS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -583,7 +584,7 @@ void mgfx_DrawPixel(int x, int y, Color color)
 }
 
 // Draw a single pixel with vec2d type
-void mgfx_DrawPixelV(vec2d pos, Color color)
+void mgfx_DrawPixelV(mgfx_vec2d pos, mgfx_color color)
 {
     glBegin(GL_POINTS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -592,7 +593,7 @@ void mgfx_DrawPixelV(vec2d pos, Color color)
 }
 
 // Draw a rectangle
-void mgfx_DrawRectangle(int x, int y, int w, int h, Color color)
+void mgfx_DrawRectangle(int x, int y, int w, int h, mgfx_color color)
 {
     glBegin(GL_QUADS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -604,7 +605,7 @@ void mgfx_DrawRectangle(int x, int y, int w, int h, Color color)
 }
 
 // Draw a rectangle with vec2d type
-void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color)
+void mgfx_DrawRectangleV(mgfx_vec2d pos, mgfx_vec2d size, mgfx_color color)
 {
     glBegin(GL_QUADS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -616,7 +617,7 @@ void mgfx_DrawRectangleV(vec2d pos, vec2d size, Color color)
 }
 
 // Draw a rectangle with Rectangle type
-void mgfx_DrawRectangleRec(Rectangle rec, Color color)
+void mgfx_DrawRectangleRec(mgfx_rec rec, mgfx_color color)
 {
     glBegin(GL_QUADS);
         glColor4ub(color.r, color.g, color.b, color.a);
@@ -628,7 +629,7 @@ void mgfx_DrawRectangleRec(Rectangle rec, Color color)
 }
 
 // Draw a circle
-void mgfx_DrawCircle(int x, int y, float radius, Color color)
+void mgfx_DrawCircle(int x, int y, float radius, mgfx_color color)
 {
     // Avoid division by 0
     if (radius <= 0) radius = 0.1f;
@@ -649,13 +650,13 @@ void mgfx_DrawCircle(int x, int y, float radius, Color color)
 }
 
 // Draw a circle with vec2d type
-void mgfx_DrawCircleV(vec2d pos, float radius, Color color)
+void mgfx_DrawCircleV(mgfx_vec2d pos, float radius, mgfx_color color)
 {
     mgfx_DrawCircle((float)pos.x, (float)pos.y, radius, color);
 }
 
 // Draw a circle with Circle type
-void mgfx_DrawCircleC(Circle circle, Color color)
+void mgfx_DrawCircleC(mgfx_circle circle, mgfx_color color)
 {
     mgfx_DrawCircle(circle.x, circle.y, circle.radius, color);
 }
@@ -663,7 +664,7 @@ void mgfx_DrawCircleC(Circle circle, Color color)
 // ------ Sprites -------
 
 // Load sprite into GPU
-int mgfx_LoadSprite(Sprite *sprite, const char *path)
+int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path)
 {
     int imgWidth, imgHeight, imgBpp;
 
@@ -700,13 +701,13 @@ int mgfx_LoadSprite(Sprite *sprite, const char *path)
 }
 
 // Unload sprite from GPU
-void mgfx_UnloadSprite(Sprite *sprite)
+void mgfx_UnloadSprite(mgfx_sprite *sprite)
 {
     glDeleteTextures(1, &sprite->ID);
 }
 
 // Draw a sprite
-void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint)
+void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, float scale, mgfx_color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
 
@@ -730,7 +731,7 @@ void mgfx_DrawSprite(Sprite *sprite, int x, int y, float scale, Color tint)
 }
 
 // Draw part of a sprite
-void mgfx_DrawPartialSprite(Sprite *sprite, Rectangle rec, vec2d pos, float scale, Color tint)
+void mgfx_DrawPartialSprite(mgfx_sprite *sprite, mgfx_rec rec, mgfx_vec2d pos, float scale, mgfx_color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
     
@@ -782,7 +783,7 @@ int mgfx_LoadFont(const char *path)
 }
 
 // Draw a piece of text
-void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, Color color)
+void mgfx_DrawText(mgfx_font font, const char *text, float x, float y, float fontSize, mgfx_color color)
 {
     unsigned int c = glfonsRGBA(color.r, color.g, color.b, color.a);
 

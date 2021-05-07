@@ -4,7 +4,7 @@
 int main()
 {
     mgfx_CreateWindow(1024, 600, "Loading sprites in minigfx");
-    Sprite image;
+    mgfx_sprite image;
     
     mgfx_LoadSprite(&image, "../resources/header.png");
 	float scale = 1.0f;
@@ -17,8 +17,8 @@ int main()
 		}
 
         mgfx_StartDrawing();
-        mgfx_ClearTo(BLACK);
-        mgfx_DrawSprite(&image, -150, 70, scale, WHITE);
+        mgfx_ClearTo(MGFX_BLACK);
+        mgfx_DrawSprite(&image, -150, 70, scale, MGFX_WHITE);
         mgfx_StopDrawing();
     }
 

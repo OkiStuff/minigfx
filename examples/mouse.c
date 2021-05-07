@@ -4,8 +4,8 @@
 int main()
 {
     mgfx_CreateWindow(1024, 600, "Mouse input in minigfx");
-    Circle circle = (Circle){ mgfx_GetMouseX(), mgfx_GetMouseY(), 30.0 };
-    Color circleColor = RED;
+    mgfx_circle circle = (mgfx_circle){ mgfx_GetMouseX(), mgfx_GetMouseY(), 30.0 };
+    mgfx_color circleColor = MGFX_RED;
     int font = mgfx_LoadFont("font.ttf");
 
     while (!mgfx_WindowCloses()) {
@@ -13,17 +13,17 @@ int main()
         circle.y = mgfx_GetMouseY();
 
         if (mgfx_IsMouseButtonPressed(MOUSE_LEFT)) {
-            circleColor = RED;
+            circleColor = MGFX_RED;
         } else if (mgfx_IsMouseButtonPressed(MOUSE_RIGHT)) {
-            circleColor = BLUE;
+            circleColor = MGFX_BLUE;
         } else if (mgfx_IsMouseButtonPressed(MOUSE_MIDDLE)) {
-            circleColor = YELLOW;
+            circleColor = MGFX_YELLOW;
         }
 
         mgfx_StartDrawing();
-        mgfx_ClearTo(WHITE);
+        mgfx_ClearTo(MGFX_WHITE);
         mgfx_DrawCircleC(circle, circleColor);
-        mgfx_DrawText(font, "Click the different mouse buttons to change the circle's color", 10.0, 10.0, 40.0, DARKGRAY);
+        mgfx_DrawText(font, "Click the different mouse buttons to change the circle's color", 10.0, 10.0, 40.0, MGFX_DARKGRAY);
         mgfx_StopDrawing();
     }
 

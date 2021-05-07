@@ -4,7 +4,7 @@
 #define MINIGFX_IMPLEMENTATION
 #include "../../minigfx.h"
 
-Sprite image;
+mgfx_sprite image;
 
 int main(int argc, char *argv[])
 {
@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
         mgfx_DrawSprite(&image,
                            mgfx_GetWindowWidth()/2-image.width/2,
                            mgfx_GetWindowHeight()/2-image.height/2,
-                           1.0f, WHITE);
-	mgfx_DrawText(font, "minigfx imageview demo", 10, 10, 40, WHITE);
+                           1.0f, MGFX_WHITE);
+	    mgfx_DrawText(font, "minigfx imageview demo", 10, 10, 40, MGFX_WHITE);
         mgfx_StopDrawing();
     }
 

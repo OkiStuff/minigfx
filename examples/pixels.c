@@ -9,11 +9,11 @@ int main()
 
     while (!mgfx_WindowCloses()) {
         mgfx_StartDrawing();
-        mgfx_ClearTo(WHITE);
+        mgfx_ClearTo(MGFX_WHITE);
 
         for (int x = 0; x < screenWidth; x++)
             for (int y = 0; y < screenHeight; y++) {
-                Color color = (Color){ mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), 255 };
+                mgfx_color color = (mgfx_color){ mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), mgfx_RandomInt(0, 255), 255 };
                 mgfx_DrawPixel(x, y, color);
             }
         

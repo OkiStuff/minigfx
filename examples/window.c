@@ -4,12 +4,12 @@
 int main()
 {
     mgfx_CreateWindow(1024, 600, "Basic Window in minigfx");
-    int font = mgfx_LoadFont("font.ttf");
+    mgfx_font font = mgfx_LoadFont("font.ttf");
 
     while (!mgfx_WindowCloses()) {
         mgfx_StartDrawing();
-        mgfx_ClearTo(WHITE);
-        mgfx_DrawText(font, "Hey! Your first window!", 10.0, 10.0, 30.0, DARKGRAY);
+        mgfx_ClearTo(MGFX_WHITE);
+        mgfx_DrawText(font, "Hey! Your first window!", 10.0, 10.0, 30.0, MGFX_DARKGRAY);
         mgfx_StopDrawing();
     }
 
