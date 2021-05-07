@@ -286,7 +286,8 @@ void mgfx_DrawCircleC(mgfx_circle circle, mgfx_color color);                    
 // ------ Sprites -------
 int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path);                                         // Load sprite into GPU
 void mgfx_UnloadSprite(mgfx_sprite *sprite);                                                        // Unload sprite from GPU
-void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, float scale, mgfx_color tint);              // Draw a sprite
+void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, mgfx_color tint);                           // Draw a sprite
+void mgfx_DrawSpriteEx(mgfx_sprite *sprite, int x, int y, float scale, float rotation, mgfx_color tint);  // Draw a sprite with extended options
 void mgfx_DrawPartialSprite(mgfx_sprite *sprite, mgfx_rec rec, mgfx_vec2d pos, float scale, mgfx_color tint);// Draw part of a sprite
 
 // ------ Text -------
@@ -707,7 +708,13 @@ void mgfx_UnloadSprite(mgfx_sprite *sprite)
 }
 
 // Draw a sprite
-void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, float scale, mgfx_color tint)
+void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, mgfx_color tint)
+{
+    mgfw_DrawSpriteEx(sprite, x, y, 1.0f, 0.0f, tint);
+}
+
+// Draw a sprite with extended options
+void mgfx_DrawSpriteEx(mgfx_sprite *sprite, int x, int y, float scale, float rotation, mgfx_color tint)
 {
     glEnable(GL_TEXTURE_2D);    // enable texture usage
 
@@ -716,6 +723,7 @@ void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, float scale, mgfx_color 
     glPushMatrix();
         glTranslatef(x, y, 0);
         glScalef(scale, scale, 1.0f);
+        glRotatef(rotation, 0, 0, 1.0f);
 
         glBegin(GL_QUADS);
             glColor4ub(tint.r, tint.g, tint.b, tint.a);

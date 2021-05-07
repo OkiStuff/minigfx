@@ -18,7 +18,7 @@ int main()
 
         mgfx_StartDrawing();
         mgfx_ClearTo(MGFX_BLACK);
-        mgfx_DrawSprite(&image, -150, 70, scale, MGFX_WHITE);
+        mgfx_DrawSpriteEx(&image, -150, 70, scale, 0.0f, MGFX_WHITE);
         mgfx_StopDrawing();
     }
 
