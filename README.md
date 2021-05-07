@@ -10,6 +10,7 @@ Small graphics library made in C
 
 ## Features
 - Cross platform: Windows and Linux. To see how to work with Windows, check out the wiki
+- Performant
 - Creating windows easily
 - Keyboard and mouse input
 - Draw and manage shapes (pixels, rectangles and circles)
