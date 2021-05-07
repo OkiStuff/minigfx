@@ -1,6 +1,7 @@
 // A port of Imageview made by laurenloco
 // Originally made with raylib
 
+#define MINIGFX_IMPLEMENTATION
 #include "../../minigfx.h"
 
 mgfx_sprite image;
