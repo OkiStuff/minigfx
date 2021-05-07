@@ -293,6 +293,9 @@ void mgfx_DrawPartialSprite(mgfx_sprite *sprite, mgfx_rec rec, mgfx_vec2d pos, f
 // ------ Text -------
 int mgfx_LoadFont(const char *path);                                                                // Load font from path
 void mgfx_DrawText(int font, const char *text, float x, float y, float fontSize, mgfx_color color); // Draw a piece of text
+void mgfx_DrawTextBlurred(mgfx_font font, const char *text, float x, float y, float intensity, float fontSize, mgfx_color color);   // Draw a piece of blurred text
+void mgfx_DrawTextShadow(mgfx_font font, const char *text, float x, float y, mgfx_color shadowColor,
+                         float intensity, float fontSize, mgfx_color textColor);                              // Draw a piece of shadowed text
 const char *mgfx_FormatText(const char *text, ...);                                                 // Formatting of text with variables to embed
 
 
@@ -306,7 +309,7 @@ int mgfx_CreateWindow(int w, int h, const char *title)
 {
     // check if glfw inits properly
     if (!glfwInit()) {
-        printf("Could not initialize GLFW\n");
+        printf("MINIGFX ERROR: Could not initialize GLFW\n");
         return -1;
     }
 
@@ -315,7 +318,7 @@ int mgfx_CreateWindow(int w, int h, const char *title)
     // initialize the window
     window = glfwCreateWindow(w, h, title, NULL, NULL);
     if (!window) {
-        printf("Could not initialize window properly\n");
+        printf("MINIGFX ERROR: Could not initialize window properly\n");
         glfwTerminate();
         return -1;
     }
@@ -333,7 +336,7 @@ int mgfx_CreateWindow(int w, int h, const char *title)
     glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
     glViewport(0, 0, fbWidth, fbHeight);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0, 0.0, 0.0, 1.0);   // black by default
 
     glEnable(GL_BLEND);     // enable color blending; required to work with transparencies
@@ -342,7 +345,7 @@ int mgfx_CreateWindow(int w, int h, const char *title)
     // check for fs initialization
     fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
     if (fs == NULL) {
-        printf("Could not create stash\n");
+        printf("FONTSTASH ERROR: Could not create stash\n");
         return -1;
     }
 
@@ -392,7 +395,7 @@ int mgfx_GetWindowHeight()
 // Clear buffers
 void mgfx_StartDrawing()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 }
 
@@ -673,7 +676,7 @@ int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path)
     byte *data = stbi_load(path, &imgWidth, &imgHeight, &imgBpp, 4);
 
     if (data == NULL) {
-        printf("Could not load sprite properly\n");
+        printf("MINIGFX ERROR: Could not load sprite properly\n");
         return -1;
     }
 
@@ -783,7 +786,7 @@ int mgfx_LoadFont(const char *path)
 
     // Check if font was properly loaded
     if (fn == FONS_INVALID) {
-        printf("Could not add desired font\n");
+        printf("MINIGFX ERROR: Could not load font\n");
         exit(1);
     }
 
@@ -800,6 +803,42 @@ void mgfx_DrawText(mgfx_font font, const char *text, float x, float y, float fon
 
     fonsSetSize(fs, fontSize);
     fonsSetColor(fs, c);
+    fonsDrawText(fs, x, y+fontSize-6, text, NULL);
+}
+
+// Draw a piece of blurred text
+void mgfx_DrawTextBlurred(mgfx_font font, const char *text, float x, float y, float intensity, float fontSize, mgfx_color color)
+{
+    unsigned int c = glfonsRGBA(color.r, color.g, color.b, color.a);
+
+    fonsClearState(fs);
+    fonsSetFont(fs, font);
+
+    fonsSetSize(fs, fontSize);
+    fonsSetColor(fs, c);
+    fonsSetSpacing(fs, 5.0f);
+    fonsSetBlur(fs, intensity);
+    fonsDrawText(fs, x, y+fontSize-6, text, NULL);
+}
+
+// Draw a piece of shadowed text
+void mgfx_DrawTextShadow(mgfx_font font, const char *text, float x, float y, mgfx_color shadowColor,
+                         float intensity, float fontSize, mgfx_color textColor)
+{
+    unsigned int cs = glfonsRGBA(shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
+    unsigned int ct = glfonsRGBA(textColor.r, textColor.g, textColor.b, textColor.a);
+
+    fonsClearState(fs);
+    fonsSetFont(fs, font);
+
+    fonsSetSize(fs, fontSize);
+    fonsSetColor(fs, cs);
+    fonsSetSpacing(fs, 0.0f);
+    fonsSetBlur(fs, intensity);
+    fonsDrawText(fs, x, y+fontSize-6, text, NULL);
+
+    fonsSetColor(fs, ct);
+    fonsSetBlur(fs, 0);
     fonsDrawText(fs, x, y+fontSize-6, text, NULL);
 }
 
