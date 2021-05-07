@@ -4,7 +4,7 @@
 int main()
 {
     mgfx_CreateWindow(1024, 600, "Basic Window in minigfx");
-    mgfx_font font = mgfx_LoadFont("font.ttf");
+    mgfx_font font = mgfx_LoadFont("resources/font.ttf");
 
     while (!mgfx_WindowCloses()) {
         mgfx_StartDrawing();

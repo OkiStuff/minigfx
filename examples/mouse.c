@@ -6,7 +6,7 @@ int main()
     mgfx_CreateWindow(1024, 600, "Mouse input in minigfx");
     mgfx_circle circle = (mgfx_circle){ mgfx_GetMouseX(), mgfx_GetMouseY(), 30.0 };
     mgfx_color circleColor = MGFX_RED;
-    int font = mgfx_LoadFont("font.ttf");
+    mgfx_font font = mgfx_LoadFont("resources/font.ttf");
 
     while (!mgfx_WindowCloses()) {
         circle.x = mgfx_GetMouseX();

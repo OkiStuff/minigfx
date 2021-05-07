@@ -5,7 +5,7 @@ int main()
 {
     mgfx_CreateWindow(1024, 600, "Basic keyboard input in minigfx");
     mgfx_rec rec = (mgfx_rec){ 1024/2-64/2, 600/2-64/2, 64, 64 };
-    mgfx_font font = mgfx_LoadFont("font.ttf");
+    mgfx_font font = mgfx_LoadFont("resources/font.ttf");
 
     while (!mgfx_WindowCloses()) {
         if (mgfx_IsKeyHeld(KEY_W)) {
