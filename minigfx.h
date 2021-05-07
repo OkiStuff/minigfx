@@ -710,7 +710,7 @@ void mgfx_UnloadSprite(mgfx_sprite *sprite)
 // Draw a sprite
 void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, mgfx_color tint)
 {
-    mgfw_DrawSpriteEx(sprite, x, y, 1.0f, 0.0f, tint);
+    mgfx_DrawSpriteEx(sprite, x, y, 1.0f, 0.0f, tint);
 }
 
 // Draw a sprite with extended options
