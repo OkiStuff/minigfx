@@ -62,6 +62,13 @@ typedef struct mgfx_sprite {
     int width, height;
 } mgfx_sprite;
 
+typedef struct mgfx_camera2d {
+    mgfx_vec2d offset;      // Displacement from the target
+    mgfx_vec2d target;      // Zoom origin
+    float rotation;
+    float zoom;             // Camera's zoom (scaling). Default should be 1.0f
+} mgfx_camera2d;
+
 typedef unsigned char byte;
 typedef int mgfx_font;
 
@@ -270,6 +277,10 @@ mgfx_vec2d mgfx_GetMousePosition();                                             
 
 // Misc. functions
 int mgfx_RandomInt(int min, int max);                                                               // Returns a random integer
+
+// Camera functions
+void mgfx_StartCamera(mgfx_camera2d camera);                                                        // Startup the camera
+void mgfx_StopCamera();                                                                             // Stop camera view
 
 // ------ Shapes -------
 void mgfx_DrawPixel(int x, int y, mgfx_color color);                                                // Draw a single pixel
@@ -575,6 +586,17 @@ int mgfx_RandomInt(int min, int max)
     
     return (rand()%(abs(max-min)+1) + min);
 }
+
+// Camera functions
+
+// Startup the camera
+void mgfx_StartCamera(mgfx_camera2d camera)
+{}
+
+// Stop camera view
+void mgfx_StopCamera()
+{}
+
 
 // ------ Shapes -------
 
