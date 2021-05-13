@@ -2,7 +2,7 @@
  * minigfx: a small, simple and intuitive graphics library made in C
  * Made by Laurentino Luna (laurenloco) in 2021
  *
- * Version: 1.0.3
+ * Version: 1.0.6
  *
  * minigfx is licensed under zlib. Check LICENSE for more
 */
@@ -28,12 +28,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define FONTSTASH_IMPLEMENTATION
 #define GLFONTSTASH_IMPLEMENTATION
+#define RAYMATH_IMPLEMENTATION
 
 #endif
+
+#define MAX_BUFFERS         4
+#define BUFFER_LEN       1024
 
 #include "external/stb_image.h"
 #include "external/fontstash.h"
 #include "external/glfontstash.h"
+#include "external/raymath.h"
 
 // ------- Types --------
 typedef struct mgfx_color {
@@ -71,6 +76,20 @@ typedef struct mgfx_camera2d {
 
 typedef unsigned char byte;
 typedef int mgfx_font;
+
+// Dynamic vertex buffers (position + texcoords + colors + indices arrays)
+typedef struct {
+    int vCounter;               // vertex position counter to process (and draw) from full buffer
+    int tcCounter;              // vertex texcoord counter to process (and draw) from full buffer
+    int cCounter;               // vertex color counter to process (and draw) from full buffer
+    float *vertices;            // vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+    float *texcoords;           // vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+    unsigned char *colors;      // vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+    unsigned int vaoId;         // OpenGL Vertex Array Object id
+    unsigned int vboId[4];      // OpenGL Vertex Buffer Objects id (4 types of vertex data)
+} DynamicBuffer;
+
+#define mgfx_vec3d      Vector3
 
 enum {
     KEY_NULL            = 0,
@@ -189,10 +208,6 @@ enum {
 #define MGFX_PINK            (mgfx_color){ 255, 204, 255, 255 }
 #define MGFX_MAGENTA         (mgfx_color){ 255, 102, 255, 255 }
 
-#define PI 3.14159265358979323846
-#define DEG2RAD (PI / 180.0)
-#define RAD2DEG (180.0 / PI)
-
 #ifdef MINIGFX_IMPLEMENTATION
 
 // ------- Variables ---------
@@ -278,10 +293,6 @@ mgfx_vec2d mgfx_GetMousePosition();                                             
 // Misc. functions
 int mgfx_RandomInt(int min, int max);                                                               // Returns a random integer
 
-// Camera functions
-void mgfx_StartCamera(mgfx_camera2d camera);                                                        // Startup the camera
-void mgfx_StopCamera();                                                                             // Stop camera view
-
 // ------ Shapes -------
 void mgfx_DrawPixel(int x, int y, mgfx_color color);                                                // Draw a single pixel
 void mgfx_DrawPixelV(mgfx_vec2d pos, mgfx_color color);                                             // Draw a single pixel with vec2d type
@@ -295,7 +306,7 @@ void mgfx_DrawCircleV(mgfx_vec2d pos, float radius, mgfx_color color);          
 void mgfx_DrawCircleC(mgfx_circle circle, mgfx_color color);                                        // Draw a circle with Circle type
 
 // ------ Sprites -------
-int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path);                                         // Load sprite into GPU
+mgfx_sprite mgfx_LoadSprite(mgfx_sprite *sprite, const char *path);                                 // Load sprite into GPU
 void mgfx_UnloadSprite(mgfx_sprite *sprite);                                                        // Unload sprite from GPU
 void mgfx_DrawSprite(mgfx_sprite *sprite, int x, int y, mgfx_color tint);                           // Draw a sprite
 void mgfx_DrawSpriteEx(mgfx_sprite *sprite, int x, int y, float scale, float rotation, mgfx_color tint);  // Draw a sprite with extended options
@@ -308,7 +319,6 @@ void mgfx_DrawTextBlurred(mgfx_font font, const char *text, float x, float y, fl
 void mgfx_DrawTextShadow(mgfx_font font, const char *text, float x, float y, mgfx_color shadowColor,
                          float intensity, float fontSize, mgfx_color textColor);                              // Draw a piece of shadowed text
 const char *mgfx_FormatText(const char *text, ...);                                                 // Formatting of text with variables to embed
-
 
 #ifdef MINIGFX_IMPLEMENTATION
 
@@ -587,17 +597,6 @@ int mgfx_RandomInt(int min, int max)
     return (rand()%(abs(max-min)+1) + min);
 }
 
-// Camera functions
-
-// Startup the camera
-void mgfx_StartCamera(mgfx_camera2d camera)
-{}
-
-// Stop camera view
-void mgfx_StopCamera()
-{}
-
-
 // ------ Shapes -------
 
 // Draw a single pixel
@@ -690,7 +689,7 @@ void mgfx_DrawCircleC(mgfx_circle circle, mgfx_color color)
 // ------ Sprites -------
 
 // Load sprite into GPU
-int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path)
+mgfx_sprite mgfx_LoadSprite(mgfx_sprite *sprite, const char *path)
 {
     int imgWidth, imgHeight, imgBpp;
 
@@ -699,7 +698,6 @@ int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path)
 
     if (data == NULL) {
         printf("MINIGFX ERROR: Could not load sprite properly\n");
-        return -1;
     }
 
     // Convert data into an OpenGL texture
@@ -722,8 +720,6 @@ int mgfx_LoadSprite(mgfx_sprite *sprite, const char *path)
     sprite->ID = id;
     sprite->width = imgWidth;
     sprite->height = imgHeight;
-
-    return 0;
 }
 
 // Unload sprite from GPU
@@ -867,15 +863,23 @@ void mgfx_DrawTextShadow(mgfx_font font, const char *text, float x, float y, mgf
 // Formatting of text with variables to embed
 const char *mgfx_FormatText(const char *text, ...)
 {
-    int length = strlen(text);
-    char *buffer = malloc(length + 20);     // add 20 extra characters... for safety
+    char buffers[MAX_BUFFERS][BUFFER_LEN] = { 0 };
+    int index = 0;
+
+    char *current_buffer = buffers[index];
+    memset(current_buffer, 0, MAX_BUFFERS); // clear buffers before
 
     va_list args;
     va_start(args, text);
-    vsprintf(buffer, text, args);
+    vsnprintf(current_buffer, BUFFER_LEN, text, args);
     va_end(args);
 
-    return buffer;
+    index++;
+    if (index >= MAX_BUFFERS) {
+        index = 0;
+    }
+
+    return current_buffer;
 }
 
 #endif
