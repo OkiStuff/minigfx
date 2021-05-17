@@ -1,5 +1,5 @@
 #define MINIGFX_IMPLEMENTATION
-#include "../minigfx.h"
+#include "../include/minigfx.h"
 
 int main()
 {

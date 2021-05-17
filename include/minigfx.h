@@ -34,11 +34,13 @@
 
 #define MAX_BUFFERS         4
 #define BUFFER_LEN       1024
+#define PI  3.14159
+#define DEG2RAD     (PI / 180)
+#define RAD2DEG     (180 / PI)
 
 #include "external/stb_image.h"
 #include "external/fontstash.h"
 #include "external/glfontstash.h"
-#include "external/raymath.h"
 
 // ------- Types --------
 typedef struct mgfx_color {
@@ -76,20 +78,6 @@ typedef struct mgfx_camera2d {
 
 typedef unsigned char byte;
 typedef int mgfx_font;
-
-// Dynamic vertex buffers (position + texcoords + colors + indices arrays)
-typedef struct {
-    int vCounter;               // vertex position counter to process (and draw) from full buffer
-    int tcCounter;              // vertex texcoord counter to process (and draw) from full buffer
-    int cCounter;               // vertex color counter to process (and draw) from full buffer
-    float *vertices;            // vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-    float *texcoords;           // vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-    unsigned char *colors;      // vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
-    unsigned int vaoId;         // OpenGL Vertex Array Object id
-    unsigned int vboId[4];      // OpenGL Vertex Buffer Objects id (4 types of vertex data)
-} DynamicBuffer;
-
-#define mgfx_vec3d      Vector3
 
 enum {
     KEY_NULL            = 0,
@@ -234,30 +222,6 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
 static void ErrorCallback(int error, const char *description)
 {
     printf("Error: %s\n", description);
-}
-
-// Draw a polygon of N sides
-// https://github.com/raysan5/raylib/blob/1.0.4/src/shapes.c
-static void DrawPoly(mgfx_vec2d pos, int sides, float radius, float rotation, mgfx_color color)
-{
-    if (sides <= 3) sides = 3;
-
-    glPushMatrix();
-        glTranslatef(pos.x, pos.y, 0);
-        glRotatef(rotation, 0, 0, 1);
-
-        glBegin(GL_TRIANGLE_FAN);
-            glColor4ub(color.r, color.g, color.b, color.a);
-            glVertex2f(pos.x, pos.y);
-
-            for (int i = 0; i < sides; i++) {
-                glVertex2f(
-                    radius*cos(i * 2 * PI / sides),
-                    radius*sin(i * 2 * PI / sides)
-                );
-            }
-        glEnd();
-    glPopMatrix();
 }
 
 #endif
