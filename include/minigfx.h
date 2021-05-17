@@ -2,7 +2,7 @@
  * minigfx: a small, simple and intuitive graphics library made in C
  * Made by Laurentino Luna (laurenloco) in 2021
  *
- * Version: 1.0.6
+ * Version: 1.0.7
  *
  * minigfx is licensed under zlib. Check LICENSE for more
 */
@@ -623,9 +623,6 @@ void mgfx_DrawCircle(int x, int y, float radius, mgfx_color color)
     // Avoid division by 0
     if (radius <= 0) radius = 0.1f;
 
-    glEnable(GL_POLYGON_SMOOTH);
-    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-    
     glBegin(GL_TRIANGLE_FAN);
         glColor4ub(color.r, color.g, color.b, color.a);
         glVertex2f(x, y);
@@ -633,9 +630,7 @@ void mgfx_DrawCircle(int x, int y, float radius, mgfx_color color)
         for (int i = 0; i <= 360; i++) {
             glVertex2f(x + sin(DEG2RAD*i) * radius, y + cos(DEG2RAD*i) * radius);
         }
-    glEnd();
-    
-    glDisable(GL_POLYGON_SMOOTH);
+    glEnd();    
 }
 
 // Draw a circle with vec2d type
