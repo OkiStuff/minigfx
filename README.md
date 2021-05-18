@@ -28,7 +28,7 @@ $ gcc main.c -lGL -lglfw -lm
 ```
 Windows systems
 ```
-$ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -lwinmm -o main.exe
+$ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -o main.exe
 ```
 
 ## minigfx example application
