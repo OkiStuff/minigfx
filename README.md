@@ -31,6 +31,8 @@ Windows systems
 $ gcc main.c -I include/ -L lib/ -lglfw3 -lopengl32 -lgdi32 -o main.exe
 ```
 
+There is also a CMake Template in templates/cmake that can be used
+
 ## minigfx example application
 Please check the wiki to see how to work with minigfx properly.
 ```
